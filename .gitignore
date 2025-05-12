@@ -1,8 +1,14 @@
-
 # Ignorar archivos locales de Terraform
+# Terraform
 .terraform/
 *.tfstate
-*.tfstate.backup
-*.log
+*.tfstate.*
 crash.log
-*.exe
+*.log
+*.tfvars
+terraform.tfvars  # ← Línea añadida para proteger datos sensibles
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+.terraform.lock.hcl
