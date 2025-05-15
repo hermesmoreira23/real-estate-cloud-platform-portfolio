@@ -1,8 +1,0 @@
-
-# Ignorar archivos locales de Terraform
-.terraform/
-*.tfstate
-*.tfstate.backup
-*.log
-crash.log
-*.exe
