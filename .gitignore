@@ -21,3 +21,8 @@ terraform.tfvars
 Thumbs.db
 .idea/
 .vscode/
+
+# Adicionales recomendados
+*.pem
+*.key
+*.tfplan
