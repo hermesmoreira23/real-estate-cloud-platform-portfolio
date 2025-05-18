@@ -3,12 +3,12 @@ variable "public_subnet_id" {
   type        = string
 }
 
-variable "security_group_id" {
-  description = "ID del grupo de seguridad para la EC2"
+variable "key_name" {
+  description = "Nombre del par de claves SSH"
   type        = string
 }
 
-variable "key_name" {
-  description = "Nombre del par de claves SSH"
+variable "security_group_id" {
+  description = "ID del security group para EC2"
   type        = string
 }

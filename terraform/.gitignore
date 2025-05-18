@@ -1,0 +1,28 @@
+# Ignorar archivos locales de Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+crash.log
+*.log
+*.tfvars
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+.terraform.lock.hcl
+
+# Seguridad: ignorar archivo con variables sensibles
+terraform.tfvars
+
+# Ignorar archivos temporales del sistema y editores
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Adicionales recomendados
+*.pem
+*.key
+*.tfplan

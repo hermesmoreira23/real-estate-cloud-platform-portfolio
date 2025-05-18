@@ -10,7 +10,7 @@ resource "aws_vpc" "main" {
   enable_dns_hostnames = true
 
   tags = {
-    Name = "real-estate-vpc"
+    Name        = "real-estate-vpc"
     Environment = "development"
   }
 }

@@ -2,6 +2,7 @@
 .terraform/
 *.tfstate
 *.tfstate.*
+terraform.tfstate.backup
 crash.log
 *.log
 *.tfvars
@@ -21,6 +22,9 @@ terraform.tfvars
 Thumbs.db
 .idea/
 .vscode/
+
+# Ignorar caché de Terragrunt (opcional)
+.terragrunt-cache/
 
 # Adicionales recomendados
 *.pem

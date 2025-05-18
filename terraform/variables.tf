@@ -62,3 +62,8 @@ variable "subnet_name" {
   description = "Nombre de la subnet pública"
   type        = string
 }
+
+variable "private_subnet_cidr" {
+  description = "CIDR para la subred privada"
+  type        = string
+}
