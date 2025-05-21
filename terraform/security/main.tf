@@ -8,7 +8,7 @@ resource "aws_security_group" "ec2_sg" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["79.117.198.67/32"]
+    cidr_blocks = [var.my_ip_cidr]
   }
 
   egress {
@@ -46,4 +46,46 @@ resource "aws_security_group" "rds_sg" {
   tags = {
     Name = "rds-postgres-sg"
   }
+}
+
+resource "aws_iam_policy" "ec2_s3_policy" {
+  name        = "EC2S3AccessPolicy"
+  description = "Permite acceso solo al bucket S3 del proyecto desde EC2"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "s3:ListBucket",
+          "s3:GetObject",
+          "s3:PutObject"
+        ]
+        Resource = [
+          "arn:aws:s3:::real-estate-static-bucket-*",         # Acceso al bucket (ajusta si tienes nombre fijo)
+          "arn:aws:s3:::real-estate-static-bucket-*/*"        # Acceso a los objetos
+        ]
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role" "ec2_role" {
+  name = "EC2S3AccessRole"
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Effect = "Allow"
+      Principal = {
+        Service = "ec2.amazonaws.com"
+      }
+      Action = "sts:AssumeRole"
+    }]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "attach_s3_policy" {
+  role       = aws_iam_role.ec2_role.name
+  policy_arn = aws_iam_policy.ec2_s3_policy.arn
 }

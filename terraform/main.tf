@@ -19,6 +19,7 @@ module "compute" {
   public_subnet_id   = module.vpc.public_subnet_id
   security_group_id  = module.security.security_group_id
   key_name           = var.key_name
+  ec2_role_name      = module.security.ec2_role_name
 }
 
 module "database" {
@@ -30,3 +31,14 @@ module "database" {
   db_password          = var.db_password
 }
 
+resource "random_string" "suffix" {
+  length  = 6
+  special = false
+}
+
+module "storage" {
+  source      = "./storage"
+  bucket_name = "real-estate-static-bucket-${random_string.suffix.result}"
+  project_tag = "RealEstateCloud"
+  environment = "dev"
+}

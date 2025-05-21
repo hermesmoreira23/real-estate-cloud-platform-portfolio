@@ -12,3 +12,8 @@ variable "security_group_id" {
   description = "ID del security group para EC2"
   type        = string
 }
+
+variable "ec2_role_name" {
+  description = "IAM Role name para la instancia EC2"
+  type        = string
+}
