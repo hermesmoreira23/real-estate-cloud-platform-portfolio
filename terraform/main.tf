@@ -42,3 +42,8 @@ module "storage" {
   project_tag = "RealEstateCloud"
   environment = "dev"
 }
+
+module "monitoring" {
+  source          = "./monitoring"
+  ec2_instance_id = module.compute.web_instance_id  # o el nombre real de tu output
+}
