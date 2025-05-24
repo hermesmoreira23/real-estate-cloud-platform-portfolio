@@ -3,7 +3,7 @@ output "public_ip" {
   value       = aws_instance.web.public_ip
 }
 
-output "instance_id" {
+output "web_instance_id" {
   description = "ID de la instancia EC2"
   value       = aws_instance.web.id
 }

@@ -45,5 +45,5 @@ module "storage" {
 
 module "monitoring" {
   source          = "./monitoring"
-  ec2_instance_id = module.compute.web_instance_id  # o el nombre real de tu output
+  ec2_instance_id = module.compute.web_instance_id
 }
