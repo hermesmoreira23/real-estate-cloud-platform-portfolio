@@ -27,10 +27,31 @@ jobs:
         working-directory: terraform
 
       - name: Terraform Plan
-  run: terraform plan -var 'availability_zone=eu-west-1a' -var 'db_allocated_storage=20' -var 'db_engine_version=15.4'
-  working-directory: terraform
-
-
+        run: |
+          terraform plan \
+            -var 'public_subnet_id=YOUR_PUBLIC_SUBNET_ID' \
+            -var 'key_name=YOUR_KEY_NAME' \
+            -var 'security_group_id=YOUR_SECURITY_GROUP_ID' \
+            -var 'ec2_role_name=YOUR_EC2_ROLE_NAME' \
+            -var 'private_subnet_ids=["YOUR_PRIVATE_SUBNET_ID"]' \
+            -var 'db_security_group_id=YOUR_DB_SECURITY_GROUP_ID' \
+            -var 'db_name=YOUR_DB_NAME' \
+            -var 'db_username=YOUR_DB_USERNAME' \
+            -var 'db_password=YOUR_DB_PASSWORD' \
+            -var 'ec2_instance_id=YOUR_EC2_INSTANCE_ID' \
+            -var 'vpc_id=YOUR_VPC_ID' \
+            -var 'my_ip_cidr=YOUR_MY_IP_CIDR' \
+            -var 'bucket_name=YOUR_BUCKET_NAME' \
+            -var 'project_tag=RealEstateCloud' \
+            -var 'environment=dev' \
+            -var 'vpc_cidr_block=10.0.0.0/16' \
+            -var 'public_subnet_cidr=10.0.1.0/24' \
+            -var 'availability_zone=eu-west-1a' \
+            -var 'vpc_name=free-tier-vpc' \
+            -var 'subnet_name=free-tier-public-subnet-1' \
+            -var 'private_subnet_cidr=YOUR_PRIVATE_SUBNET_CIDR'
+        working-directory: terraform
+        
   docker-build:
     name: 'Build Docker Image (Safe)'
     runs-on: ubuntu-latest
