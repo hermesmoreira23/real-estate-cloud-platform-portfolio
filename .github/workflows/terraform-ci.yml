@@ -10,7 +10,7 @@ jobs:
   terraform:
     name: 'Terraform Validate & Plan'
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -29,33 +29,32 @@ jobs:
       - name: Terraform Plan
         run: |
           terraform plan \
-            -var 'public_subnet_id=YOUR_PUBLIC_SUBNET_ID' \
-            -var 'key_name=YOUR_KEY_NAME' \
-            -var 'security_group_id=YOUR_SECURITY_GROUP_ID' \
-            -var 'ec2_role_name=YOUR_EC2_ROLE_NAME' \
-            -var 'private_subnet_ids=["YOUR_PRIVATE_SUBNET_ID"]' \
-            -var 'db_security_group_id=YOUR_DB_SECURITY_GROUP_ID' \
-            -var 'db_name=YOUR_DB_NAME' \
-            -var 'db_username=YOUR_DB_USERNAME' \
-            -var 'db_password=YOUR_DB_PASSWORD' \
-            -var 'ec2_instance_id=YOUR_EC2_INSTANCE_ID' \
-            -var 'vpc_id=YOUR_VPC_ID' \
-            -var 'my_ip_cidr=YOUR_MY_IP_CIDR' \
-            -var 'bucket_name=YOUR_BUCKET_NAME' \
-            -var 'project_tag=RealEstateCloud' \
-            -var 'environment=dev' \
-            -var 'vpc_cidr_block=10.0.0.0/16' \
-            -var 'public_subnet_cidr=10.0.1.0/24' \
-            -var 'availability_zone=eu-west-1a' \
-            -var 'vpc_name=free-tier-vpc' \
-            -var 'subnet_name=free-tier-public-subnet-1' \
-            -var 'private_subnet_cidr=YOUR_PRIVATE_SUBNET_CIDR' \
-            -var 'var.db_allocated_storage'
-
+            -var "public_subnet_id=${{ secrets.PUBLIC_SUBNET_ID }}" \
+            -var "key_name=${{ secrets.KEY_NAME }}" \
+            -var "security_group_id=${{ secrets.SECURITY_GROUP_ID }}" \
+            -var "ec2_role_name=${{ secrets.EC2_ROLE_NAME }}" \
+            -var "private_subnet_ids=[\"${{ secrets.PRIVATE_SUBNET_ID }}\"]" \
+            -var "db_security_group_id=${{ secrets.DB_SECURITY_GROUP_ID }}" \
+            -var "db_name=${{ secrets.DB_NAME }}" \
+            -var "db_username=${{ secrets.DB_USERNAME }}" \
+            -var "db_password=${{ secrets.DB_PASSWORD }}" \
+            -var "ec2_instance_id=${{ secrets.EC2_INSTANCE_ID }}" \
+            -var "vpc_id=${{ secrets.VPC_ID }}" \
+            -var "my_ip_cidr=${{ secrets.MY_IP_CIDR }}" \
+            -var "bucket_name=${{ secrets.BUCKET_NAME }}" \
+            -var "project_tag=RealEstateCloud" \
+            -var "environment=dev" \
+            -var "vpc_cidr_block=10.0.0.0/16" \
+            -var "public_subnet_cidr=10.0.1.0/24" \
+            -var "availability_zone=eu-west-1a" \
+            -var "vpc_name=free-tier-vpc" \
+            -var "subnet_name=free-tier-public-subnet-1" \
+            -var "private_subnet_cidr=${{ secrets.PRIVATE_SUBNET_CIDR }}" \
+            -var "db_allocated_storage=${{ secrets.DB_ALLOCATED_STORAGE }}"
         working-directory: terraform
 
   docker-build:
-    name: 'Build Docker Image (Safe)'
+    name: 'Build Docker Image'
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -85,7 +84,7 @@ jobs:
           python-version: '3.10'
 
       - name: Install dependencies
-        run: pip install -r requirements.txt pytest
+        run: pip install -r requirements.txt
 
       - name: Run tests
         run: pytest
