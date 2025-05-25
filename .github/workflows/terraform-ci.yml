@@ -3,8 +3,8 @@ name: Terraform & App CI
 on:
   push:
     branches:
-      - main    # Ejecuta este workflow en cada push a la rama main
-  pull_request:  # También ejecuta cuando se hace un Pull Request hacia cualquier rama
+      - main
+  pull_request:
 
 jobs:
   terraform:
@@ -23,7 +23,7 @@ jobs:
         working-directory: terraform
 
       - name: Terraform Validate
-        run: terraform validate -var 'availability_zone=eu-west-1a'
+        run: terraform validate
         working-directory: terraform
 
       - name: Terraform Plan
