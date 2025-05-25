@@ -27,7 +27,7 @@ jobs:
         working-directory: terraform
 
       - name: Terraform Plan
-        run: terraform plan -var 'availability_zone=eu-west-1a' -var 'db_allocated_storage=20'
+        run: terraform plan -var 'availability_zone=eu-west-1a' -var 'db_allocated_storage=20' -var 'db_engine_version'
         working-directory: terraform
 
   docker-build:
