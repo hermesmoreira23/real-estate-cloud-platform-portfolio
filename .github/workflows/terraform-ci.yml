@@ -49,9 +49,11 @@ jobs:
             -var 'availability_zone=eu-west-1a' \
             -var 'vpc_name=free-tier-vpc' \
             -var 'subnet_name=free-tier-public-subnet-1' \
-            -var 'private_subnet_cidr=YOUR_PRIVATE_SUBNET_CIDR'
+            -var 'private_subnet_cidr=YOUR_PRIVATE_SUBNET_CIDR' \
+            -var 'var.db_allocated_storage'
+
         working-directory: terraform
-        
+
   docker-build:
     name: 'Build Docker Image (Safe)'
     runs-on: ubuntu-latest
