@@ -29,19 +29,19 @@ jobs:
       - name: Terraform Plan
         run: |
           terraform plan \
-            -var 'public_subnet_id=YOUR_PUBLIC_SUBNET_ID' \
-            -var 'key_name=YOUR_KEY_NAME' \
-            -var 'security_group_id=YOUR_SECURITY_GROUP_ID' \
-            -var 'ec2_role_name=YOUR_EC2_ROLE_NAME' \
-            -var 'private_subnet_ids=["YOUR_PRIVATE_SUBNET_ID"]' \
-            -var 'db_security_group_id=YOUR_DB_SECURITY_GROUP_ID' \
-            -var 'db_name=YOUR_DB_NAME' \
-            -var 'db_username=YOUR_DB_USERNAME' \
-            -var 'db_password=YOUR_DB_PASSWORD' \
-            -var 'ec2_instance_id=YOUR_EC2_INSTANCE_ID' \
-            -var 'vpc_id=YOUR_VPC_ID' \
-            -var 'my_ip_cidr=YOUR_MY_IP_CIDR' \
-            -var 'bucket_name=YOUR_BUCKET_NAME' \
+            -var 'public_subnet_id=subnet-12345678' \
+            -var 'key_name=my-key' \
+            -var 'security_group_id=sg-12345678' \
+            -var 'ec2_role_name=my-ec2-role' \
+            -var 'private_subnet_ids=["subnet-87654321"]' \
+            -var 'db_security_group_id=sg-87654321' \
+            -var 'db_name=mydb' \
+            -var 'db_username=admin' \
+            -var 'db_password=changeme' \
+            -var 'ec2_instance_id=i-12345678' \
+            -var 'vpc_id=vpc-12345678' \
+            -var 'my_ip_cidr=1.2.3.4/32' \
+            -var 'bucket_name=my-unique-bucket-123' \
             -var 'project_tag=RealEstateCloud' \
             -var 'environment=dev' \
             -var 'vpc_cidr_block=10.0.0.0/16' \
@@ -49,8 +49,9 @@ jobs:
             -var 'availability_zone=eu-west-1a' \
             -var 'vpc_name=free-tier-vpc' \
             -var 'subnet_name=free-tier-public-subnet-1' \
-            -var 'private_subnet_cidr=YOUR_PRIVATE_SUBNET_CIDR' \
-            -var 'db_allocated_storage=20'
+            -var 'private_subnet_cidr=10.0.2.0/24' \
+            -var 'db_allocated_storage=20' \
+            -var 'db_engine_version=15.4'
         working-directory: terraform
 
   docker-build:
