@@ -23,11 +23,11 @@ jobs:
         working-directory: terraform
 
       - name: Terraform Validate
-        run: terraform validate
+        run: terraform validate -var 'availability_zone=eu-west-1a'
         working-directory: terraform
 
       - name: Terraform Plan
-        run: terraform plan
+        run: terraform plan -var 'availability_zone=eu-west-1a'
         working-directory: terraform
 
   docker-build:
