@@ -26,7 +26,7 @@ jobs:
         run: terraform validate
         working-directory: terraform
 
-      - name: Terraform Plan #solo en plan
+      - name: Terraform Plan
         run: |
           terraform plan \
             -var 'public_subnet_id=subnet-12345678' \
