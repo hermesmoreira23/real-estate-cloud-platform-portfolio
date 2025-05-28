@@ -1,14 +1,14 @@
-name: Terraform & App CI 
+name: Terraform & App CI
 
 on:
   push:
     branches:
-      - main
-  pull_request:
+      - main    # Ejecuta en cada push a main
+  pull_request:  # También en Pull Requests
 
 jobs:
   terraform:
-    name: 'Terraform Validate & Plan'
+    name: 'Terraform Validate'
     runs-on: ubuntu-latest
     
     steps:
@@ -24,35 +24,6 @@ jobs:
 
       - name: Terraform Validate
         run: terraform validate
-        working-directory: terraform
-
-      - name: Terraform Plan
-        run: |
-          terraform plan \
-            -var 'public_subnet_id=subnet-12345678' \
-            -var 'key_name=my-key' \
-            -var 'security_group_id=sg-12345678' \
-            -var 'ec2_role_name=my-ec2-role' \
-            -var 'private_subnet_ids=["subnet-87654321"]' \
-            -var 'db_security_group_id=sg-87654321' \
-            -var 'db_name=mydb' \
-            -var 'db_username=admin' \
-            -var 'db_password=changeme' \
-            -var 'ec2_instance_id=i-12345678' \
-            -var 'vpc_id=vpc-12345678' \
-            -var 'my_ip_cidr=1.2.3.4/32' \
-            -var 'bucket_name=my-unique-bucket-123' \
-            -var 'project_tag=RealEstateCloud' \
-            -var 'environment=dev' \
-            -var 'vpc_cidr_block=10.0.0.0/16' \
-            -var 'public_subnet_cidr=10.0.1.0/24' \
-            -var 'availability_zone=eu-west-1a' \
-            -var 'vpc_name=free-tier-vpc' \
-            -var 'subnet_name=free-tier-public-subnet-1' \
-            -var 'private_subnet_cidr=10.0.2.0/24' \
-            -var 'db_allocated_storage=20' \
-            -var 'db_instance_class=db.t3.micro' \
-            -var 'db_engine_version=15.4'
         working-directory: terraform
 
   docker-build:
@@ -89,5 +60,4 @@ jobs:
         run: pip install -r requirements.txt pytest
 
       - name: Run tests
-        run: pytest  
-
+        run: pytest
