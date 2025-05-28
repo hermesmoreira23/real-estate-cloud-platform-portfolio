@@ -67,3 +67,53 @@ variable "private_subnet_cidr" {
   description = "CIDR para la subred privada"
   type        = string
 }
+
+variable "public_subnet_id" {
+  description = "ID de la subred pública para la EC2"
+  type        = string
+}
+
+variable "security_group_id" {
+  description = "ID del security group para EC2"
+  type        = string
+}
+
+variable "ec2_role_name" {
+  description = "IAM Role name para la instancia EC2"
+  type        = string
+}
+
+variable "private_subnet_ids" {
+  description = "IDs de las subredes privadas"
+  type        = list(string)
+}
+
+variable "db_security_group_id" {
+  description = "Grupo de seguridad para RDS"
+  type        = string
+}
+
+variable "ec2_instance_id" {
+  description = "ID de la instancia EC2 a monitorizar"
+  type        = string
+}
+
+variable "vpc_id" {
+  description = "VPC ID para asociar con los recursos"
+  type        = string
+}
+
+variable "bucket_name" {
+  description = "Nombre único para el bucket S3"
+  type        = string
+}
+
+variable "project_tag" {
+  description = "Tag del proyecto"
+  type        = string
+}
+
+variable "environment" {
+  description = "Entorno (dev, prod, etc.)"
+  type        = string
+}
