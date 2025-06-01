@@ -47,3 +47,7 @@ module "monitoring" {
   source          = "./monitoring"
   ec2_instance_id = module.compute.web_instance_id
 }
+
+provider "aws" {
+  region = var.aws_region
+}
