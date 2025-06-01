@@ -121,5 +121,5 @@ variable "environment" {
 variable "aws_region" {
   description = "AWS region"
   type        = string
-  type     = "eu-west-1"
+  default     = "eu-west-1"
 }
