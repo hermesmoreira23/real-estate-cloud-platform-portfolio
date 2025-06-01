@@ -32,22 +32,6 @@ jobs:
         run: rm -rf .terraform .terraform.lock.hcl
         working-directory: terraform
 
-      - name: Check AWS secrets presence
-  run: |
-    if [ -z "$AWS_ACCESS_KEY_ID" ]; then
-      echo "AWS_ACCESS_KEY_ID is EMPTY"
-      exit 1
-    else
-      echo "AWS_ACCESS_KEY_ID is PRESENT"
-    fi
-    if [ -z "$AWS_SECRET_ACCESS_KEY" ]; then
-      echo "AWS_SECRET_ACCESS_KEY is EMPTY"
-      exit 1
-    else
-      echo "AWS_SECRET_ACCESS_KEY is PRESENT"
-    fi
-
-
       - name: Terraform Init
         run: terraform init
         working-directory: terraform
