@@ -13,11 +13,17 @@ jobs:
     env:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      AWS_DEFAULT_REGION: eu-west-1 
+      AWS_DEFAULT_REGION: eu-west-1
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+
+      - name: Print AWS env (debug)
+        run: |
+          echo "AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID"
+          echo "AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY"
+          echo "AWS_DEFAULT_REGION: $AWS_DEFAULT_REGION"
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
@@ -101,4 +107,4 @@ jobs:
         run: pytest
 
 
-        
+
