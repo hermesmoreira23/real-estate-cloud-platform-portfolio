@@ -117,3 +117,9 @@ variable "environment" {
   description = "Entorno (dev, prod, etc.)"
   type        = string
 }
+
+variable "aws_region" {
+  description = "AWS region"
+  type        = string
+  type     = "eu-west-1"
+}
