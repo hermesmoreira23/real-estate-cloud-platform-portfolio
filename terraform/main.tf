@@ -12,25 +12,25 @@ terraform {
   required_version = ">= 1.3.0"
 }
 
-module "vpc" {
-  source              = "./vpc"
-  vpc_cidr_block      = var.vpc_cidr_block
-  public_subnet_cidr  = var.public_subnet_cidr
-  private_subnet_cidr = var.private_subnet_cidr
-  availability_zone   = var.availability_zone
-  vpc_name            = var.vpc_name
-  subnet_name         = var.subnet_name
+module "networking" {
+  source                = "./networking"
+  vpc_cidr_block        = var.vpc_cidr_block
+  public_subnet_cidr    = var.public_subnet_cidr
+  private_subnet_cidr   = var.private_subnet_cidr
+  availability_zone     = var.availability_zone
+  vpc_name              = var.vpc_name
+  subnet_name           = var.subnet_name
 }
 
 module "security" {
   source      = "./security"
-  vpc_id      = module.vpc.vpc_id
+  vpc_id      = module.networking.vpc_id
   my_ip_cidr  = var.my_ip_cidr
 }
 
 module "compute" {
   source             = "./compute"
-  public_subnet_id   = module.vpc.public_subnet_id
+  public_subnet_id   = module.networking.public_subnet_id
   security_group_id  = module.security.security_group_id
   key_name           = var.key_name
   ec2_role_name      = module.security.ec2_role_name
@@ -38,7 +38,7 @@ module "compute" {
 
 module "database" {
   source               = "./database"
-  private_subnet_ids   = [module.vpc.private_subnet_id]
+  private_subnet_ids   = module.networking.private_subnet_ids
   db_security_group_id = module.security.db_security_group_id
   db_name              = var.db_name
   db_username          = var.db_username
