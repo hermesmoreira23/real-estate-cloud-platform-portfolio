@@ -88,8 +88,9 @@ jobs:
   app-test:
     name: 'FastAPI App Tests'
     runs-on: ubuntu-latest
-    env:
-      PYTHONPATH: ${{ github.workspace }}
+    defaults:
+    run:
+      working-directory: app
     
     steps:
       - name: Checkout code
