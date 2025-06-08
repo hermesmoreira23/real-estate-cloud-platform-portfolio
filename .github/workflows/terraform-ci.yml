@@ -83,15 +83,15 @@ jobs:
           docker build \
             --file app/Dockerfile \
             --tag real-estate-app \
-            . 
+            .
 
   app-test:
     name: 'FastAPI App Tests'
     runs-on: ubuntu-latest
     env:
       PYTHONPATH: ./app
-    
-    steps:  
+
+    steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
@@ -104,6 +104,10 @@ jobs:
         run: pip install -r requirements.txt pytest
 
       - name: Run tests
-        run: pytest
+        run: |
+          # Aseguramos que 'app' esté en el path de importación
+          export PYTHONPATH=app
+          pytest
+
 
 
