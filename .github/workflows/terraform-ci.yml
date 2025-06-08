@@ -89,7 +89,7 @@ jobs:
     name: 'FastAPI App Tests'
     runs-on: ubuntu-latest
     env:
-      PYTHONPATH: ./app
+      PYTHONPATH: ${{ github.workspace }}
 
     steps:
       - name: Checkout code
