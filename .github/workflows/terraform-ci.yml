@@ -73,21 +73,22 @@ jobs:
   docker-build:
     name: 'Build Docker Image (Safe)'
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: app
-
+    
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
       - name: Build Docker image
-        run: docker build -t real-estate-app .
+        run: |
+          docker build \
+            --file app/Dockerfile \    # Apunta al Dockerfile dentro de app/
+            --tag real-estate-app \
+            .                          # Contexto = raíz del repo
 
   app-test:
     name: 'FastAPI App Tests'
     runs-on: ubuntu-latest
-    defaults:
+    defaults:   
       run:
         working-directory: app
 
