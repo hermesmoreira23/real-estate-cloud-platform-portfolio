@@ -6,7 +6,7 @@ import models, crud, schemas
 
 
 
-app = FastAPI()  # ✔️ Así está correcto (es solo un comentario)
+app = FastAPI()  # ✔️ (solo un comentario)
 
 def get_db():
     db = SessionLocal()
