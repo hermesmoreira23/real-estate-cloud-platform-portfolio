@@ -4,7 +4,7 @@ from sqlalchemy import text
 from db_config import engine, SessionLocal, Base
 import models, crud, schemas
 
-models.Base.metadata.create_all(bind=engine)
+
 
 app = FastAPI()  # ✔️ Así está correcto (es solo un comentario)
 
