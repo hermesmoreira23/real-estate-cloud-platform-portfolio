@@ -88,12 +88,10 @@ jobs:
   app-test:
     name: 'FastAPI App Tests'
     runs-on: ubuntu-latest
-
-    defaults:                      # <- va aquí, al mismo nivel que runs-on
-      run:
-        working-directory: app     # <- pytest correrá dentro de app/
+    env:
+      PYTHONPATH: ./app
     
-    steps:
+    steps:  
       - name: Checkout code
         uses: actions/checkout@v3
 
