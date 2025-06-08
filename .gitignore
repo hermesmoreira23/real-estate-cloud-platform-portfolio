@@ -1,4 +1,4 @@
-# Ignorar archivos locales de Terraform
+# === Terraform ===
 .terraform/
 *.tfstate
 *.tfstate.*
@@ -15,7 +15,32 @@ override.tf.json
 # Seguridad: ignorar archivo con variables sensibles
 terraform.tfvars
 
-# Ignorar archivos temporales del sistema y editores
+# Terragrunt (opcional)
+.terragrunt-cache/
+
+# === Python / FastAPI ===
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+.Python
+.env
+.venv/
+venv/
+ENV/
+env/
+
+# === Docker ===
+*.log
+docker-compose.override.yml
+
+# === Certificados, claves y otros archivos sensibles ===
+*.pem
+*.key
+*.tfplan
+
+# === Archivos temporales del sistema y editores ===
 *.swp
 *.swo
 .DS_Store
@@ -23,10 +48,15 @@ Thumbs.db
 .idea/
 .vscode/
 
-# Ignorar caché de Terragrunt (opcional)
-.terragrunt-cache/
+# === Otros (según tu stack) ===
+# Ignorar archivos de pruebas o backups automáticos
+*~
+*.bak
 
-# Adicionales recomendados
-*.pem
-*.key
-*.tfplan
+# === Node / NPM (por si añades cosas de frontend) ===
+node_modules/
+npm-debug.log*
+
+# === General ===
+# Ignorar archivos de configuración local o personalizados
+.local/

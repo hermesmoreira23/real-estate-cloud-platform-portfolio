@@ -1,0 +1,34 @@
+version: "3.9"
+services:
+  app:
+    build:
+      context: .
+      dockerfile: app/Dockerfile
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    networks:
+      - realestate-net
+    # desactiva esto si no tienes .env
+    # env_file:
+    #   - ./app/.env
+
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: realestate
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: realhermes88
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - realestate-net
+
+volumes:
+  pgdata:
+
+networks:
+  realestate-net:
