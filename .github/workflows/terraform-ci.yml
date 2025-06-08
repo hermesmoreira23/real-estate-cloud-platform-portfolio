@@ -81,17 +81,14 @@ jobs:
       - name: Build Docker image
         run: |
           docker build \
-            --file app/Dockerfile \    # Apunta al Dockerfile dentro de app/
+            --file app/Dockerfile \
             --tag real-estate-app \
-            .                          # Contexto = raíz del repo
+            . 
 
   app-test:
     name: 'FastAPI App Tests'
     runs-on: ubuntu-latest
-    defaults:   
-      run:
-        working-directory: app
-
+    
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
