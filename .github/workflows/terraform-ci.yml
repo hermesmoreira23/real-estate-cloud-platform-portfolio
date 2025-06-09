@@ -75,17 +75,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: List workspace
-        run: ls -al
+      - name: List workspace (debug)
+        run: ls -R .
 
       - name: Build Docker image
         run: |
           docker build \
             --file app/Dockerfile \
-            --tag real-estate-app \
+            --tag fastapi-docker-app \
             .
 
   app-test:
