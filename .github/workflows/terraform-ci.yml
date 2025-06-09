@@ -84,13 +84,16 @@ jobs:
           ls -R .
 
       - name: Build Docker image
-        run: docker build --file app/Dockerfile --tag fastapi-docker-app .
+        run: |
+          docker build \
+            --file Dockerfile \
+            --tag fastapi-docker-app \
+            app/
 
   app-test:
     name: FastAPI App Tests
     runs-on: ubuntu-latest
-
-
+    
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -105,6 +108,7 @@ jobs:
 
       - name: Run tests
         run: pytest tests
+
 
 
 
