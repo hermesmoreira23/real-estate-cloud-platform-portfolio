@@ -70,25 +70,20 @@ jobs:
             -var 'db_engine_version=15.4'
         working-directory: terraform
 
-  docker-build:
+    docker-build:
     name: Build Docker Image (Safe)
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Debug workspace contents
-        run: |
-          echo "PWD: $PWD"
-          ls -R .
+      - uses: actions/checkout@v3
 
       - name: Build Docker image
-        run: |
-          docker build \
-            --file app/Dockerfile \
-            --tag fastapi-docker-app \
-            .
+        uses: docker/build-push-action@v4
+        with:
+          context: app
+          file: app/Dockerfile
+          push: false
+          tags: fastapi-docker-app:latest
 
   app-test:
     name: FastAPI App Tests
