@@ -1,4 +1,4 @@
-name: Terraform & FastAPI CI
+name: Terraform & App CI
 
 on:
   push:
@@ -7,19 +7,24 @@ on:
   pull_request:
 
 jobs:
-  # ───────────── Terraform Validate & Plan ─────────────
   terraform:
-    name: Terraform Validate & Plan
+    name: 'Terraform Validate & Plan'
     runs-on: ubuntu-latest
     env:
-      AWS_ACCESS_KEY_ID:      ${{ secrets.AWS_ACCESS_KEY_ID }}
-      AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      AWS_DEFAULT_REGION:     eu-west-1
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_DEFAULT_REGION: eu-west-1
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-        
+
+      - name: Print AWS env (debug)
+        run: |
+          echo "AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID"
+          echo "AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY"
+          echo "AWS_DEFAULT_REGION: $AWS_DEFAULT_REGION"
+
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
 
@@ -65,40 +70,33 @@ jobs:
             -var 'db_engine_version=15.4'
         working-directory: terraform
 
-  # ───────────── Build Docker Image ─────────────
   docker-build:
-    name: Build Docker Image
+    name: 'Build Docker Image (Safe)'
     runs-on: ubuntu-latest
-    needs: terraform
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # opcional, para depurar:
       - name: Debug workspace contents
-        run: |
-          echo "PWD: $PWD"
-          ls -R .
+        run: ls -R .
 
       - name: Build Docker image
         run: |
           docker build \
-            -f app/Dockerfile \
-            -t fastapi-docker-app \
-            app
+            --file app/Dockerfile \
+            --tag fastapi-docker-app \
+            .
 
-  # ───────────── FastAPI App Tests ─────────────
-  fastapi-test:
-    name: FastAPI App Tests
+  app-test:
+    name: 'FastAPI App Tests'
     runs-on: ubuntu-latest
-    needs: docker-build
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Set up Python 3.10
+      - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.10'
@@ -106,12 +104,8 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt pytest
 
-      - name: Run pytest
+      - name: Run tests
         run: pytest tests
-
-
-
-
 
 
 
