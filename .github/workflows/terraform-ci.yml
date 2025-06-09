@@ -78,8 +78,13 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      - name: Debug workspace contents
+        run: |
+          echo "PWD: $PWD"
+          ls -R .
+
       - name: Build Docker image
-        run: docker build -f app/Dockerfile -t fastapi-docker-app .
+        run: docker build --file app/Dockerfile --tag fastapi-docker-app .
 
   app-test:
     name: FastAPI App Tests
