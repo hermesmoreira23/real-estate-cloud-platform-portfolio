@@ -94,7 +94,7 @@ jobs:
     name: FastAPI App Tests
     runs-on: ubuntu-latest
     env:
-      # Asegura que "app" sea importable
+      # Asegura que "app" sea importables
       PYTHONPATH: ${{ github.workspace }}
 
     steps:
