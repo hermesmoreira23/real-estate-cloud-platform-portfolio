@@ -1,7 +1,7 @@
 FROM python:3.10-slim 
 WORKDIR /app
 
-# Copia los requirements desde la raíz
+# Copia los requirements desde la raíz all
 COPY requirements.txt .
 
 # Copia toda la carpeta app dentro de /app
