@@ -74,19 +74,21 @@ jobs:
     name: 'Build Docker Image (Safe)'
     runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+  steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
 
-      - name: Debug workspace contents
-        run: ls -R .
+    - name: Debug workspace contents
+      run: |
+        echo "PWD: $PWD"
+        ls -R .
 
-      - name: Build Docker image
-        run: |
-          docker build \
-            --file app/Dockerfile \
-            --tag fastapi-docker-app \
-            .
+    - name: Build Docker image
+      run: |
+        docker build \
+          --file app/Dockerfile \
+          --tag fastapi-docker-app \
+          .
 
   app-test:
     name: 'FastAPI App Tests'
