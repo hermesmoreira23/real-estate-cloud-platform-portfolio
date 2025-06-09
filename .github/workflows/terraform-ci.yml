@@ -86,14 +86,17 @@ jobs:
       - name: Build Docker image
         run: |
           docker build \
-            --file Dockerfile \
+            --file app/Dockerfile \
             --tag fastapi-docker-app \
-            app/
+            .
 
   app-test:
     name: FastAPI App Tests
     runs-on: ubuntu-latest
-    
+    env:
+      # Asegura que "app" sea importable
+      PYTHONPATH: ${{ github.workspace }}
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
