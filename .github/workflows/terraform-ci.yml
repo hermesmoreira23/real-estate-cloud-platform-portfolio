@@ -78,7 +78,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: List workspace (debug)
+      - name: Debug workspace contents
         run: ls -R .
 
       - name: Build Docker image
@@ -91,11 +91,9 @@ jobs:
   app-test:
     name: 'FastAPI App Tests'
     runs-on: ubuntu-latest
-    env:
-      PYTHONPATH: ${{ github.workspace }}
 
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v3
 
       - name: Set up Python
@@ -107,10 +105,8 @@ jobs:
         run: pip install -r requirements.txt pytest
 
       - name: Run tests
-        run: |
-          # Aseguramos que 'app' esté en el path de importación
-          export PYTHONPATH=app
-          pytest
+        run: pytest tests
+
 
 
 
