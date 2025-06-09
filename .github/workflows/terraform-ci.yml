@@ -84,11 +84,16 @@ jobs:
           ls -R .
 
       - name: Build Docker image
-        run: docker build --file app/Dockerfile --tag fastapi-docker-app .
+        run: docker build \
+          --file app/Dockerfile \
+          --tag fastapi-docker-app \
+          .
 
   app-test:
     name: FastAPI App Tests
     runs-on: ubuntu-latest
+    env:
+      PYTHONPATH: ${{ github.workspace }}
 
     steps:
       - name: Checkout repository
@@ -104,6 +109,7 @@ jobs:
 
       - name: Run tests
         run: pytest tests
+
 
 
 
