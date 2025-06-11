@@ -83,16 +83,15 @@ jobs:
 
       - name: Debug workspace contents
         run: |
-          echo "=== Debug workspace ==="
           echo "PWD: $PWD"
-          find . -maxdepth 2 -type f
+          ls -R .
 
       - name: Build Docker image
         run: |
           docker build \
-            --file app/Dockerfile \
-            --tag real-estate-app \
-            app
+            -f ./app/Dockerfile \
+            -t fastapi-docker-app \
+            .
 
   # 3️⃣ FastAPI App Tests
   app-test:
@@ -115,6 +114,7 @@ jobs:
       - name: Run tests
         run: pytest tests
 
+        
 
 
         
