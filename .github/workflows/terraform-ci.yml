@@ -7,6 +7,7 @@ on:
   pull_request:
 
 jobs:
+  # ───────────── Terraform Validate & Plan ─────────────
   terraform:
     name: 'Terraform Validate & Plan'
     runs-on: ubuntu-latest
@@ -70,6 +71,7 @@ jobs:
             -var 'db_engine_version=15.4'
         working-directory: terraform
 
+  # ───────────── Build Docker Image ─────────────
   docker-build:
     name: 'Build Docker Image (Safe)'
     runs-on: ubuntu-latest
@@ -87,10 +89,11 @@ jobs:
       - name: Build Docker image
         run: |
           docker build \
-            --file app/Dockerfile \
-            --tag fastapi-docker-app \
-            app
+            -f ./app/Dockerfile \
+            -t fastapi-docker-app \
+            .
 
+  # ───────────── FastAPI App Tests ─────────────
   app-test:
     name: 'FastAPI App Tests'
     runs-on: ubuntu-latest
@@ -100,7 +103,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Set up Python
+      - name: Set up Python 3.10
         uses: actions/setup-python@v4
         with:
           python-version: '3.10'
@@ -111,3 +114,5 @@ jobs:
       - name: Run tests
         run: pytest tests
 
+
+        
