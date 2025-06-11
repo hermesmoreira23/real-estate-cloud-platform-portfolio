@@ -86,7 +86,7 @@ jobs:
           docker build \
             --file app/Dockerfile \
             --tag fastapi-docker-app \
-            app
+            .
 
   app-test:
     name: 'FastAPI App Tests'
