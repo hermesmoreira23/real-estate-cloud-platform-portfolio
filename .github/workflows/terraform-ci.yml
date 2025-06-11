@@ -8,7 +8,7 @@ on:
 
 jobs:
   terraform:
-    name: Terraform Validate & Plan
+    name: 'Terraform Validate & Plan'
     runs-on: ubuntu-latest
     env:
       AWS_ACCESS_KEY_ID:     ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -18,27 +18,57 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-        
+
+      - name: Print AWS env (debug)
+        run: |
+          echo "AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID"
+          echo "AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY"
+          echo "AWS_DEFAULT_REGION: $AWS_DEFAULT_REGION"
+
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
 
-      - name: Clean cache
+      - name: Clean Terraform cache
         run: rm -rf .terraform .terraform.lock.hcl
-        
-      - name: Terraform Init
-        run: terraform init
         working-directory: terraform
+
+      - name: Terraform Init
+        run: terraform -chdir=terraform init
 
       - name: Terraform Validate
-        run: terraform validate
-        working-directory: terraform
+        run: terraform -chdir=terraform validate
 
       - name: Terraform Plan
-        run: terraform plan -var 'aws_region=eu-west-1' …
-        working-directory: terraform
+        run: |
+          terraform -chdir=terraform plan \
+            -var 'aws_region=eu-west-1' \
+            -var 'public_subnet_id=subnet-12345678' \
+            -var 'key_name=my-key' \
+            -var 'security_group_id=sg-12345678' \
+            -var 'ec2_role_name=my-ec2-role' \
+            -var 'private_subnet_ids=["subnet-87654321"]' \
+            -var 'db_security_group_id=sg-87654321' \
+            -var 'db_name=mydb' \
+            -var 'db_username=admin' \
+            -var 'db_password=changeme' \
+            -var 'ec2_instance_id=i-12345678' \
+            -var 'vpc_id=vpc-12345678' \
+            -var 'my_ip_cidr=1.2.3.4/32' \
+            -var 'bucket_name=my-unique-bucket-123' \
+            -var 'project_tag=RealEstateCloud' \
+            -var 'environment=dev' \
+            -var 'vpc_cidr_block=10.0.0.0/16' \
+            -var 'public_subnet_cidr=10.0.1.0/24' \
+            -var 'availability_zone=eu-west-1a' \
+            -var 'vpc_name=free-tier-vpc' \
+            -var 'subnet_name=free-tier-public-subnet-1' \
+            -var 'private_subnet_cidr=10.0.2.0/24' \
+            -var 'db_allocated_storage=20' \
+            -var 'db_instance_class=db.t3.micro' \
+            -var 'db_engine_version=15.4'
 
   docker-build:
-    name: Build Docker Image
+    name: 'Build Docker Image (Safe)'
     runs-on: ubuntu-latest
     needs: terraform
 
@@ -51,16 +81,15 @@ jobs:
           echo "PWD: $PWD"
           ls -R .
 
-      - name: Build & tag Docker image
-        uses: docker/build-push-action@v4
-        with:
-          context: ./app           # contexto = carpeta app/
-          file:    ./app/Dockerfile# Dockerfile dentro de app/
-          push:    false
-          tags:    fastapi-docker-app:latest
+      - name: Build Docker image
+        run: |
+          docker build \
+            -f app/Dockerfile \
+            -t fastapi-docker-app \
+            app
 
   app-test:
-    name: FastAPI App Tests
+    name: 'FastAPI App Tests'
     runs-on: ubuntu-latest
     needs: docker-build
 
