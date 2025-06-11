@@ -7,9 +7,9 @@ on:
   pull_request:
 
 jobs:
-  # 1️⃣ Terraform Validate & Plan
+  # ───────────── Terraform Validate & Plan ─────────────
   terraform:
-    name: Terraform Validate & Plan
+    name: 'Terraform Validate & Plan'
     runs-on: ubuntu-latest
     env:
       AWS_ACCESS_KEY_ID:     ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -71,9 +71,9 @@ jobs:
             -var 'db_engine_version=15.4'
         working-directory: terraform
 
-  # 2️⃣ Build Docker Image
+  # ───────────── Build Docker Image ─────────────
   docker-build:
-    name: Build Docker Image
+    name: 'Build Docker Image (Safe)'
     runs-on: ubuntu-latest
     needs: terraform
 
@@ -87,15 +87,11 @@ jobs:
           ls -R .
 
       - name: Build Docker image
-        run: |
-          docker build \
-            -f ./app/Dockerfile \
-            -t fastapi-docker-app \
-            .
+        run: docker build -f app/Dockerfile -t fastapi-docker-app app
 
-  # 3️⃣ FastAPI App Tests
+  # ───────────── FastAPI App Tests ─────────────
   app-test:
-    name: FastAPI App Tests
+    name: 'FastAPI App Tests'
     runs-on: ubuntu-latest
     needs: docker-build
 
@@ -114,7 +110,8 @@ jobs:
       - name: Run tests
         run: pytest tests
 
-        
+
+
 
 
         
