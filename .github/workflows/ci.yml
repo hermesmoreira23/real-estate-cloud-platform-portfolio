@@ -36,7 +36,7 @@ jobs:
           docker build \
             --file app/Dockerfile \
             --tag fastapi-docker-app \
-            app
+            .
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
@@ -59,4 +59,3 @@ jobs:
           docker tag fastapi-docker-app:latest $IMAGE_URI
           docker push $IMAGE_URI
 
-          
