@@ -35,7 +35,7 @@ jobs:
           # Contexto = carpeta app/, Dockerfile en app/Dockerfile
           docker build \
             --file app/Dockerfile \
-            --tag fastapi-docker-app \
+            --tag fastapi-docker-app:latest \
             .
 
       - name: Configure AWS credentials
@@ -45,17 +45,15 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region:            eu-west-1
 
-      - name: Login to ECR
-        run: |
-          aws ecr get-login-password \
-            --region eu-west-1 \
-          | docker login \
-            --username AWS \
-            --password-stdin ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.eu-west-1.amazonaws.com
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+        with:
+          region: eu-west-1
 
       - name: Tag & push image to ECR
         run: |
-          IMAGE_URI=${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.eu-west-1.amazonaws.com/real-estate-app:${{ github.sha }}
+          IMAGE_URI=${{ steps.login-ecr.outputs.registry }}/real-estate-app:${{ github.sha }}
           docker tag fastapi-docker-app:latest $IMAGE_URI
           docker push $IMAGE_URI
 
