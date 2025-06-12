@@ -15,6 +15,10 @@ jobs:
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       AWS_DEFAULT_REGION:    eu-west-1
 
+    defaults:
+      run:
+        working-directory: terraform
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -24,25 +28,15 @@ jobs:
 
       - name: Clean Terraform cache
         run: rm -rf .terraform .terraform.lock.hcl
-        working-directory: terraform
 
-      - name: Terraform Init
-        working-directory: terraform
+      - name: Terraform Init (no backend)
         run: terraform init -backend=false
 
       - name: Terraform Validate
-        working-directory: terraform
         run: terraform validate
 
       - name: Terraform Plan (dry-run)
-        working-directory: terraform
-        run: |
-          echo "Listing terraform dir:"
-          ls -lah .
-          echo "🔙 Listing parent dir (should contain terraform.tfvars):"
-          ls -lah ..
-          terraform plan \
-            -var-file="../terraform.tfvars"
+        run: terraform plan -var-file=terraform.tfvars
 
   docker-build:
     name: Build Docker Image
@@ -82,6 +76,7 @@ jobs:
 
       - name: Run tests
         run: pytest tests
+
 
 
 
