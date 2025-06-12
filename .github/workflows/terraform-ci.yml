@@ -1,75 +1,108 @@
-name: FastAPI Docker CI
+name: Terraform CI
 
 on:
   push:
-    branches: [ "main" ]
-    paths-ignore:
-      - 'terraform/**'
+    branches:
+      - main
   pull_request:
-    branches: [ "main" ]
-    paths-ignore:
-      - 'terraform/**'
 
 jobs:
-  build-test:
-    name: Build & Test Application
+  terraform:
+    name: Terraform Validate & Plan
     runs-on: ubuntu-latest
     env:
-      # para que pytest encuentre tu paquete app
-      PYTHONPATH: ${{ github.workspace }}
+      AWS_ACCESS_KEY_ID:     ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_DEFAULT_REGION:    eu-west-1
 
     steps:
-      - name: Checkout repo
+      - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: "3.10"
-
-      - name: Install dependencies
+      - name: Print AWS env (debug)
         run: |
-          pip install -r requirements.txt
-          pip install pytest
+          echo "AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID"
+          echo "AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY"
+          echo "AWS_DEFAULT_REGION: $AWS_DEFAULT_REGION"
 
-      - name: Run tests
-        run: pytest tests
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
 
-      - name: Build Docker image
+      - name: Clean Terraform cache
+        run: rm -rf .terraform .terraform.lock.hcl
+        working-directory: terraform
+
+      - name: Terraform Init
+        run: terraform init
+        working-directory: terraform
+
+      - name: Terraform Validate
+        run: terraform validate
+        working-directory: terraform
+
+      - name: Terraform Plan (full infra)
         run: |
-          # Contexto = carpeta app/, Dockerfile en app/Dockerfile
-          docker build \
-            --file app/Dockerfile \
-            --tag fastapi-docker-app:latest \
-            .
+          terraform plan \
+            -var 'aws_region=eu-west-1' \
+            -var 'public_subnet_id=subnet-12345678' \
+            -var 'key_name=my-key' \
+            -var 'security_group_id=sg-12345678' \
+            -var 'ec2_role_name=my-ec2-role' \
+            -var 'private_subnet_ids=["subnet-87654321"]' \
+            -var 'db_security_group_id=sg-87654321' \
+            -var 'db_name=mydb' \
+            -var 'db_username=admin' \
+            -var 'db_password=changeme' \
+            -var 'ec2_instance_id=i-12345678' \
+            -var 'vpc_id=vpc-12345678' \
+            -var 'my_ip_cidr=1.2.3.4/32' \
+            -var 'bucket_name=my-unique-bucket-123' \
+            -var 'project_tag=RealEstateCloud' \
+            -var 'environment=dev' \
+            -var 'vpc_cidr_block=10.0.0.0/16' \
+            -var 'public_subnet_cidr=10.0.1.0/24' \
+            -var 'availability_zone=eu-west-1a' \
+            -var 'vpc_name=free-tier-vpc' \
+            -var 'subnet_name=free-tier-public-subnet-1' \
+            -var 'private_subnet_cidr=10.0.2.0/24' \
+            -var 'db_allocated_storage=20' \
+            -var 'db_instance_class=db.t3.micro' \
+            -var 'db_engine_version=15.4'
+        working-directory: terraform
 
-  ecr-push:
-    name: Push Image to ECR
+      - name: Terraform Plan (dry-run sample)
+        run: terraform plan -var-file="terraform.tfvars.sample"
+        working-directory: terraform
+
+  terraform-db-plan:
+    name: Terraform DB Module Plan (cost-free)
     runs-on: ubuntu-latest
-    needs: build-test
+    needs: terraform
+    env:
+      AWS_ACCESS_KEY_ID:     ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_DEFAULT_REGION:    eu-west-1
+
+    defaults:
+      run:
+        working-directory: terraform/db-only
 
     steps:
-      - name: Checkout repo
+      - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v2
-        with:
-          aws-access-key-id:     ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region:            eu-west-1
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
 
-      - name: Login to Amazon ECR
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v2
-        with:
-          region: eu-west-1
+      - name: Clean Terraform cache
+        run: rm -rf .terraform .terraform.lock.hcl
 
-      - name: Tag & push image
-        run: |
-          IMAGE_URI=${{ steps.login-ecr.outputs.registry }}/real-estate-app:${{ github.sha }}
-          docker tag fastapi-docker-app:latest $IMAGE_URI
-          docker push $IMAGE_URI
+      - name: Terraform Init (no backend)
+        run: terraform init -backend=false
+
+      - name: Terraform Plan DB sandbox
+        run: terraform plan
+        
 
 
 
