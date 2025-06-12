@@ -10,7 +10,7 @@ jobs:
   build-test:
     runs-on: ubuntu-latest
     env:
-      # para que pytest encuentre tu paquete app
+      # para que pytest encuentre tu paquete app.
       PYTHONPATH: ${{ github.workspace }}
 
     steps:
