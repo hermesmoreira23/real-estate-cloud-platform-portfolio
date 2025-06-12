@@ -12,7 +12,7 @@ override.tf.json
 .terraform.lock.hcl
 
 # Seguridad: ignorar archivo con variables sensibles
-terraform.tfvars
+terraform.tfvars.sample
 
 # Ignorar archivos temporales del sistema y editores
 *.swp

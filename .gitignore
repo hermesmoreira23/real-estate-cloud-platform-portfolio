@@ -13,7 +13,7 @@ override.tf.json
 .terraform.lock.hcl
 
 # Seguridad: ignorar archivo con variables sensibles
-terraform.tfvars
+terraform.tfvars.sample
 
 # Terragrunt (opcional)
 .terragrunt-cache/

@@ -36,7 +36,7 @@ jobs:
 
       - name: Terraform Plan (dry-run)
         working-directory: terraform
-        run: terraform plan -var-file="../terraform.tfvars"
+        run: terraform plan -var-file="../terraform.tfvars.sample"
 
   docker-build:
     name: Build Docker Image
