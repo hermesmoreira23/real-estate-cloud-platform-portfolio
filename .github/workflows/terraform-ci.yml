@@ -40,7 +40,7 @@ jobs:
         run: terraform validate
         working-directory: terraform
 
-      - name: Terraform Plan (full infra)
+      - name: Terraform Plan
         run: |
           terraform plan \
             -var 'aws_region=eu-west-1' \
@@ -68,10 +68,6 @@ jobs:
             -var 'db_allocated_storage=20' \
             -var 'db_instance_class=db.t3.micro' \
             -var 'db_engine_version=15.4'
-        working-directory: terraform
-
-      - name: Terraform Plan (dry-run sample)
-        run: terraform plan -var-file="terraform.tfvars.sample"
         working-directory: terraform
 
   terraform-db-plan:
@@ -102,7 +98,6 @@ jobs:
 
       - name: Terraform Plan DB sandbox
         run: terraform plan
-        
 
 
 
