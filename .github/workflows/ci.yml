@@ -3,8 +3,13 @@ name: FastAPI Docker CI
 on:
   push:
     branches: [ "main" ]
+    # No ejecutar este workflow si solo cambian archivos de Terraform
+    paths-ignore:
+      - 'terraform/**'
   pull_request:
     branches: [ "main" ]
+    paths-ignore:
+      - 'terraform/**'
 
 jobs:
   build-test:
