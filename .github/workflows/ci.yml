@@ -23,20 +23,19 @@ jobs:
         uses: hashicorp/setup-terraform@v2
 
       - name: Clean Terraform cache
-        run: rm -rf .terraform .terraform.lock.hcl
-        working-directory: terraform
+        run: rm -rf terraform/.terraform terraform/.terraform.lock.hcl
 
-      - name: Terraform Init
-        run: terraform init -backend=false
-        working-directory: terraform
+      - name: Terraform Init (no backend)
+        run: terraform -chdir=terraform init -backend=false
 
       - name: Terraform Validate
-        run: terraform validate
-        working-directory: terraform
+        run: terraform -chdir=terraform validate
 
       - name: Terraform Plan (dry-run)
-        working-directory: terraform
-        run: terraform plan
+        run: terraform -chdir=terraform plan -refresh=false
+
+      # Si quieres planear solo el módulo de base de datos, usa:
+      # run: terraform -chdir=terraform plan -refresh=false -target=module.database
 
   docker-build:
     name: Build Docker Image
