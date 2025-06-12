@@ -37,11 +37,12 @@ jobs:
       - name: Terraform Plan (dry-run)
         working-directory: terraform
         run: |
-          echo "Contenido de $(pwd):"
-          ls -l
-          echo "¿Está terraform.tfvars aquí?"
-          [ -f terraform.tfvars ] && echo "¡Sí!" || echo "NO existe"
-          terraform plan -var-file="terraform.tfvars"
+          echo "Listing terraform dir:"
+          ls -lah .
+          echo "🔙 Listing parent dir (should contain terraform.tfvars):"
+          ls -lah ..
+          terraform plan \
+            -var-file="../terraform.tfvars"
 
   docker-build:
     name: Build Docker Image
