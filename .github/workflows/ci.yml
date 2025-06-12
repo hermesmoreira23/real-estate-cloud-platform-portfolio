@@ -37,10 +37,8 @@ jobs:
 
       - name: Terraform Plan (dry-run)
         working-directory: terraform
-        run: terraform plan \
-              -lock=false \
-              -input=false \
-              -refresh=false
+        run: |
+          terraform plan -lock=false -input=false -refresh=false
 
   docker-build:
     name: Build Docker Image
@@ -80,6 +78,7 @@ jobs:
 
       - name: Run tests
         run: pytest tests
+
 
 
 
