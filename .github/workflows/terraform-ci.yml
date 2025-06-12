@@ -70,6 +70,37 @@ jobs:
             -var 'db_engine_version=15.4'
         working-directory: terraform
 
+  terraform-db-plan:
+    name: Terraform DB Module Plan (cost-free)
+    runs-on: ubuntu-latest
+    needs: terraform
+    env:
+      AWS_ACCESS_KEY_ID:     ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_DEFAULT_REGION:    eu-west-1
+
+    defaults:
+      run:
+        working-directory: terraform/db-only
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+
+      - name: Clean Terraform cache
+        run: rm -rf .terraform .terraform.lock.hcl
+
+      - name: Terraform Init (no backend)
+        run: terraform init -backend=false
+
+      - name: Terraform Plan DB sandbox
+        run: terraform plan
+
+
+
 
         
 
