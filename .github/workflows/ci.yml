@@ -10,6 +10,7 @@ jobs:
   terraform:
     name: Terraform Validate & Plan
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     env:
       AWS_ACCESS_KEY_ID:     ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -25,17 +26,19 @@ jobs:
       - name: Clean Terraform cache
         run: rm -rf terraform/.terraform terraform/.terraform.lock.hcl
 
-      - name: Terraform Init (no backend)
-        run: terraform -chdir=terraform init -backend=false
+      - name: Terraform Init (no backend/get)
+        run: terraform -chdir=terraform init \
+              -backend=false \
+              -get=false
 
       - name: Terraform Validate
         run: terraform -chdir=terraform validate
 
       - name: Terraform Plan (dry-run)
-        run: terraform -chdir=terraform plan -refresh=false
-
-      # Si quieres planear solo el módulo de base de datos, usa:
-      # run: terraform -chdir=terraform plan -refresh=false -target=module.database
+        run: terraform -chdir=terraform plan \
+              -lock=false \
+              -input=false \
+              -refresh=false
 
   docker-build:
     name: Build Docker Image
@@ -75,6 +78,7 @@ jobs:
 
       - name: Run tests
         run: pytest tests
+
 
 
 
