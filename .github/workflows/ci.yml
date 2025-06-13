@@ -31,6 +31,13 @@ jobs:
         working-directory: terraform
         run: terraform validate
 
+      - name: Debug: mostrar terraform.tfvars
+        working-directory: terraform
+        run: |
+          echo ">>> Listando terraform.tfvars:"
+          cat terraform.tfvars
+          echo ">>> Fin de terraform.tfvars"
+
       - name: Terraform Plan (dry-run)
         working-directory: terraform
         run: |
