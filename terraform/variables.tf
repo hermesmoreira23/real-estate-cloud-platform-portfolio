@@ -123,3 +123,15 @@ variable "aws_region" {
   type        = string
   default     = "eu-west-1"
 }
+
+variable "image_tag" {
+  description = "Tag de la imagen Docker a desplegar en ECS"
+  type        = string
+  default     = "latest"
+}
+
+variable "acm_certificate_arn" {
+  description = "ARN del certificado ACM para el listener HTTPS del ALB"
+  type        = string
+  default     = ""
+}

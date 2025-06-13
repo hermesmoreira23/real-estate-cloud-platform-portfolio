@@ -65,3 +65,25 @@ module "monitoring" {
 provider "aws" {
   region = var.aws_region
 }
+
+# ——— Output del endpoint RDS ———
+output "rds_endpoint" {
+  description = "Endpoint completo exportado desde el módulo database"
+  value       = module.database.db_endpoint
+}
+
+module "ecs" {
+  source               = "./compute/ecs"
+  cluster_name         = "real-estate-cluster"
+  service_name         = "real-estate-service"
+  container_image      = "<TU_CUENTA>.dkr.ecr.eu-west-1.amazonaws.com/real-estate-app:${var.image_tag}"
+  container_port       = 8000
+  desired_count        = 2
+  vpc_id               = module.networking.vpc_id
+  public_subnet_ids    = [module.networking.public_subnet_id]
+  private_subnet_ids   = module.networking.private_subnet_ids
+  alb_security_group_id    = module.security.security_group_id   # crea uno nuevo si es necesario
+  ecs_security_group_id    = module.security.security_group_id    # idem
+  aws_region           = var.aws_region
+  acm_certificate_arn  = var.acm_certificate_arn    # si usas HTTPS
+}
