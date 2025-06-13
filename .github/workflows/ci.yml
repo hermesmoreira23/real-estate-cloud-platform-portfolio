@@ -25,7 +25,7 @@ jobs:
 
       - name: Terraform Init (dry-run)
         working-directory: terraform
-        run: terraform init -backend=false -get=false
+        run: terraform init -backend=false
 
       - name: Terraform Validate
         working-directory: terraform
@@ -70,5 +70,6 @@ jobs:
 
       - name: Run tests
         run: pytest tests
+
 
 
