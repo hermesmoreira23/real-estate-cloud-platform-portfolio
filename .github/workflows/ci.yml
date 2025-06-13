@@ -1,4 +1,4 @@
-nname: Terraform & App CI
+name: Terraform & App CI
 
 on:
   push:
