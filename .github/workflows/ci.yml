@@ -33,11 +33,12 @@ jobs:
 
       - name: Terraform Plan (dry-run)
         working-directory: terraform
-        run: terraform plan \
-          -lock=false \
-          -input=false \
-          -refresh=false \
-          -var-file=terraform.tfvars
+        run: |
+          terraform plan \
+            -lock=false \
+            -input=false \
+            -refresh=false \
+            -var-file="terraform.tfvars"
 
   docker-build:
     name: Build Docker Image
@@ -59,7 +60,6 @@ jobs:
     needs: docker-build
     runs-on: ubuntu-latest
     env:
-      # Para que pytest encuentre tu paquete `app`
       PYTHONPATH: ${{ github.workspace }}/app
 
     steps:
