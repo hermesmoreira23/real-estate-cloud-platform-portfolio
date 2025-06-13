@@ -31,21 +31,22 @@ jobs:
         working-directory: terraform
         run: terraform validate
 
-      - name: "Debug: mostrar terraform.tfvars"
+      - name: "Debug: Listar vars"
         working-directory: terraform
         run: |
-          echo ">>> Listando terraform.tfvars:"
-          cat terraform.tfvars
-          echo ">>> Fin de terraform.tfvars"
+          echo ">> pwd: $(pwd)"
+          echo ">> Contenido de terraform/:"
+          ls -la
+          echo ">> Contenido de ../terraform.tfvars:"
+          cat ../terraform.tfvars || echo "(no encontrado)"
 
       - name: Terraform Plan (dry-run)
         working-directory: terraform
-        run: |
-          terraform plan \
-            -lock=false \
-            -input=false \
-            -refresh=false \
-            -var-file="terraform.tfvars"
+        run: terraform plan \
+          -lock=false \
+          -input=false \
+          -refresh=false \
+          -var-file="../terraform.tfvars"
 
   docker-build:
     name: Build Docker Image
@@ -85,6 +86,7 @@ jobs:
 
       - name: Run tests
         run: pytest tests
+
 
 
 
