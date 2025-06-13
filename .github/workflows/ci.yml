@@ -14,7 +14,8 @@ jobs:
       AWS_ACCESS_KEY_ID:     ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       AWS_DEFAULT_REGION:    eu-west-1
-      TF_INPUT: false
+      TF_VAR_db_username:    ${{ secrets.TF_VAR_DB_USERNAME }}
+      TF_VAR_db_password:    ${{ secrets.TF_VAR_DB_PASSWORD }}
 
     steps:
       - name: Checkout code
@@ -23,7 +24,11 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
 
-      - name: Terraform Init (dry-run)
+      - name: Clean Terraform cache
+        working-directory: terraform
+        run: rm -rf .terraform .terraform.lock.hcl
+
+      - name: Terraform Init (no backend)
         working-directory: terraform
         run: terraform init -backend=false
 
@@ -33,7 +38,7 @@ jobs:
 
       - name: Terraform Plan (dry-run)
         working-directory: terraform
-        run: terraform plan -lock=false -input=false -refresh=false -var-file=terraform.tfvars
+        run: terraform plan -var-file="../terraform.tfvars"
 
   docker-build:
     name: Build Docker Image
@@ -41,12 +46,15 @@ jobs:
     needs: terraform
 
     steps:
-      - name: Checkout code
+      - name: Checkout repo
         uses: actions/checkout@v3
 
       - name: Build Docker image
-        working-directory: .
-        run: docker build --file app/Dockerfile --tag real-estate-app:latest .
+        run: |
+          docker build \
+            --file app/Dockerfile \
+            --tag real-estate-app:latest \
+            .
 
   app-test:
     name: FastAPI App Tests
@@ -56,10 +64,10 @@ jobs:
       PYTHONPATH: ${{ github.workspace }}/app
 
     steps:
-      - name: Checkout code
+      - name: Checkout repo
         uses: actions/checkout@v3
 
-      - name: Setup Python
+      - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: "3.10"
