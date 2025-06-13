@@ -1,4 +1,4 @@
-name: Terraform & App CI
+nname: Terraform & App CI
 
 on:
   push:
@@ -25,7 +25,7 @@ jobs:
 
       - name: Terraform Init (dry-run)
         working-directory: terraform
-        run: terraform init -backend=false
+        run: terraform init -backend=false -get=false
 
       - name: Terraform Validate
         working-directory: terraform
@@ -33,47 +33,42 @@ jobs:
 
       - name: Terraform Plan (dry-run)
         working-directory: terraform
-        run: |
-          terraform plan \
-            -lock=false \
-            -input=false \
-            -refresh=false \
-            -var-file="terraform.tfvars"
+        run: terraform plan -lock=false -input=false -refresh=false -var-file=terraform.tfvars
 
   docker-build:
     name: Build Docker Image
-    needs: terraform
     runs-on: ubuntu-latest
+    needs: terraform
 
     steps:
-      - name: Checkout repo
+      - name: Checkout code
         uses: actions/checkout@v3
 
       - name: Build Docker image
-        run: docker build \
-          --file app/Dockerfile \
-          --tag real-estate-app:latest \
-          .
+        working-directory: .
+        run: docker build --file app/Dockerfile --tag real-estate-app:latest .
 
   app-test:
     name: FastAPI App Tests
-    needs: docker-build
     runs-on: ubuntu-latest
+    needs: docker-build
     env:
       PYTHONPATH: ${{ github.workspace }}/app
 
     steps:
-      - name: Checkout repo
+      - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up Python
+      - name: Setup Python
         uses: actions/setup-python@v4
         with:
           python-version: "3.10"
 
       - name: Install dependencies
-        run: pip install -r requirements.txt pytest
+        run: |
+          pip install -r requirements.txt pytest
 
       - name: Run tests
         run: pytest tests
+
 
