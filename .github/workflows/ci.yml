@@ -54,7 +54,7 @@ jobs:
         id: extract_rds
         working-directory: terraform
         run: |
-          endpoint=$(terraform show -json tfplan \
+          endpoint=$(terraform show -json tfplan | \
             | jq -r '.planned_values.root_module.outputs.rds_endpoint.value')
           if [ -z "$endpoint" ] || [ "$endpoint" = "null" ]; then
             echo "No aparece rds_endpoint en el plan, se omite"
