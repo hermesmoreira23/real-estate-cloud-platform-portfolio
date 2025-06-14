@@ -46,6 +46,22 @@ jobs:
         working-directory: terraform
         run: terraform plan -var-file=terraform.tfvars
 
+        - name: Guardar plan en archivo
+        working-directory: terraform
+        run: terraform plan -out=tfplan
+
+      - name: Extraer endpoint RDS del plan
+        id: extract_rds
+        working-directory: terraform
+        run: |
+          endpoint=$(terraform show -json tfplan \
+            | jq -r '.planned_values.root_module.outputs.rds_endpoint.value')
+          if [ -z "$endpoint" ] || [ "$endpoint" = "null" ]; then
+            echo "No aparece rds_endpoint en el plan, se omite"
+          else
+            echo "rds_endpoint=$endpoint" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Get RDS endpoint
         id: get_rds
         working-directory: terraform
