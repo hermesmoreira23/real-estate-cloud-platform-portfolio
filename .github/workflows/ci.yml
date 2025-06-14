@@ -101,10 +101,10 @@ jobs:
         run: |
           pip install -r requirements.txt pytest black flake8
 
-      - name: Run black (format check)
+      - name: Check formatting with Black
         run: black --check .
 
-      - name: Run flake8 (style check)
+      - name: Lint with Flake8
         run: flake8 .
 
       - name: Test DB Connection

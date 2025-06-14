@@ -3,6 +3,8 @@ from sqlalchemy.orm import Session
 from sqlalchemy import text
 from db_config import engine, SessionLocal, Base
 import models, crud, schemas
+from fastapi import FastAPI, Depends, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 
 
 app = FastAPI()  # ✔️ (solo un comentario)
