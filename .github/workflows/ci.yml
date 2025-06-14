@@ -80,6 +80,22 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt pytest
 
+      - name: Test DB Connection
+        working-directory: app
+        run: |
+          python - <<EOF
+          import os, sys
+          # Añadimos 'app' al path para que python encuentre db_config.py
+          sys.path.insert(0, "")
+          # Si usas RDS, asigna la variable desde el output de Terraform:
+          os.environ["DB_HOST"] = "${{ needs.terraform.outputs.rds_endpoint }}"
+          from db_config import engine
+          # Intenta conectar y cerrar:
+          conn = engine.connect()
+          conn.close()
+          print("Conexión a RDS OK")
+          EOF
+
       - name: Run tests
         run: pytest tests
 
