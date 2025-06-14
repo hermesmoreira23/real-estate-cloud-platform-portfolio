@@ -14,7 +14,8 @@ jobs:
       AWS_ACCESS_KEY_ID:     ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       AWS_DEFAULT_REGION:    eu-west-1
-      # tus variables sensibles de RDS
+      TF_INPUT: false
+      # variables sensibles para el módulo database
       TF_VAR_db_username:    ${{ secrets.TF_VAR_DB_USERNAME }}
       TF_VAR_db_password:    ${{ secrets.TF_VAR_DB_PASSWORD }}
 
@@ -26,24 +27,24 @@ jobs:
         uses: hashicorp/setup-terraform@v2
 
       - name: Clean Terraform cache
-        working-directory: terraform
-        run: rm -rf .terraform .terraform.lock.hcl
+        run: rm -rf terraform/.terraform terraform/.terraform.lock.hcl
 
-      - name: Terraform Init (no backend)
-        working-directory: terraform
-        run: terraform init -backend=false
+      - name: Terraform Init (dry-run)
+        run: |
+          terraform -chdir=terraform init \
+            -backend=false \
+            -get=false
 
       - name: Terraform Validate
-        working-directory: terraform
-        run: terraform validate
+        run: terraform -chdir=terraform validate
 
       - name: Terraform Plan (dry-run)
-        working-directory: terraform
-        run: terraform plan \
-              -var-file="terraform.tfvars" \
-              -lock=false \
-              -input=false \
-              -refresh=false
+        run: |
+          terraform -chdir=terraform plan \
+            -var-file="terraform.tfvars" \
+            -lock=false \
+            -input=false \
+            -refresh=false
 
   docker-build:
     name: Build Docker Image
@@ -82,7 +83,7 @@ jobs:
 
       - name: Run tests
         run: pytest tests
-        
+
 
 
 
