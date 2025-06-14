@@ -1,4 +1,3 @@
-# .github/workflows/ci.yml
 name: Terraform & App CI
 
 on:
@@ -17,10 +16,6 @@ jobs:
       AWS_DEFAULT_REGION:    eu-west-1
       TF_VAR_db_username:    ${{ secrets.TF_VAR_DB_USERNAME }}
       TF_VAR_db_password:    ${{ secrets.TF_VAR_DB_PASSWORD }}
-
-    # Exponemos el endpoint de RDS como output de este job
-    outputs:
-      rds_endpoint: ${{ steps.get_rds.outputs.rds_endpoint }}
 
     steps:
       - name: Checkout code
@@ -44,28 +39,29 @@ jobs:
       - name: Terraform Plan
         id: plan
         working-directory: terraform
-        run: terraform plan -var-file=terraform.tfvars
+        # Genera un plan binario para poder inspeccionarlo luego
+        run: terraform plan -out=tfplan -var-file=terraform.tfvars
 
-      - name: Guardar plan en archivo
+      - name: Guardar plan en JSON
         working-directory: terraform
-        run: terraform plan -out=tfplan
+        run: terraform show -json tfplan > tfplan.json
 
       - name: Extraer endpoint RDS del plan
         id: extract_rds
         working-directory: terraform
         run: |
+          # lee la salida JSON y saca el valor de rds_endpoint
           endpoint=$(jq -r '.planned_values.root_module.outputs.rds_endpoint.value' tfplan.json)
-          if [ -z "$endpoint" ] || [ "$endpoint" = "null" ]; then
-            echo "No aparece rds_endpoint en el plan, se omite"
-          else
-            echo "rds_endpoint=$endpoint" >> "$GITHUB_OUTPUT"
+          if [[ -z "$endpoint" || "$endpoint" == "null" ]]; then
+            echo "❌ No encontré rds_endpoint en el plan"
+            exit 1
           fi
+          # lo exporto para los siguientes jobs
+          echo "rds_endpoint=$endpoint" >> "$GITHUB_OUTPUT"
 
-      - name: Get RDS endpoint
-        id: get_rds
-        working-directory: terraform
-        run: |
-          echo "rds_endpoint=$(terraform output -raw rds_endpoint)" >> $GITHUB_OUTPUT
+    outputs:
+      # esto hace disponible `needs.terraform.outputs.rds_endpoint` en jobs posteriores
+      rds_endpoint: ${{ steps.extract_rds.outputs.rds_endpoint }}
 
   docker-build:
     name: Build Docker Image
@@ -88,14 +84,13 @@ jobs:
     runs-on: ubuntu-latest
     needs: docker-build
     env:
-      # Para que pytest encuentre tu paquete `app`
-      PYTHONPATH: ${{ github.workspace }}/app
-      # Leemos el endpoint real de RDS desde los outputs del job "terraform"
-      DB_HOST:    ${{ needs.terraform.outputs.rds_endpoint }}
-      DB_PORT:    5432
-      DB_NAME:    realestate
-      DB_USER:    admin
-      DB_PASSWORD: realhermes88
+      # apunto mi app al endpoint de RDS que extraje arriba
+      DB_HOST:      ${{ needs.terraform.outputs.rds_endpoint }}
+      DB_USER:      admin
+      DB_PASSWORD:  realhermes88
+      DB_NAME:      realestate
+      DB_PORT:      5432
+      PYTHONPATH:   ${{ github.workspace }}/app
 
     steps:
       - name: Checkout repo
@@ -107,21 +102,23 @@ jobs:
           python-version: "3.10"
 
       - name: Install dependencies
-        run: |
-          pip install -r requirements.txt pytest
+        run: pip install -r requirements.txt pytest
 
-      - name: Test RDS Connection
+      - name: Test DB Connection to RDS
         working-directory: app
         run: |
           python - <<EOF
+          import os, sys
+          sys.path.insert(0, ".")
           from db_config import engine
-          # Intentamos abrir y cerrar la conexión al RDS
           conn = engine.connect()
           conn.close()
           print("✅ Conexión a RDS OK")
           EOF
 
       - name: Run tests
+        working-directory: app
         run: pytest tests
+
 
 
