@@ -69,6 +69,7 @@ jobs:
       DB_HOST:     localhost
       DB_USER:     ${{ secrets.TF_VAR_DB_USERNAME }}
       DB_PASSWORD: ${{ secrets.TF_VAR_DB_PASSWORD }}
+      POSTGRES_HOST_AUTH_METHOD: trust
       DB_NAME:     realestate
       DB_PORT:     5432
 
