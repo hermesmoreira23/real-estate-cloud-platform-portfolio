@@ -16,6 +16,7 @@ jobs:
       AWS_DEFAULT_REGION:    eu-west-1
       TF_VAR_db_username:    ${{ secrets.TF_VAR_DB_USERNAME }}
       TF_VAR_db_password:    ${{ secrets.TF_VAR_DB_PASSWORD }}
+      RDS_ENDPOINT:          ${{ steps.terraform.outputs.rds_endpoint }}
 
     steps:
       - name: Checkout code
@@ -61,12 +62,34 @@ jobs:
             --tag real-estate-app:latest \
             .
 
+  jobs:
+  # … tu job de Terraform y Docker aquí …
+
   app-test:
     name: FastAPI App Tests
     runs-on: ubuntu-latest
     needs: docker-build
+
+    # 1️⃣ Levantamos un servicio de Postgres solo para este job
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER:     admin
+          POSTGRES_PASSWORD: realhermes88
+          POSTGRES_DB:       realestate
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U admin -d realestate"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    # 2️⃣ Variables de entorno, apuntamos DATABASE_URL al servicio
     env:
-      PYTHONPATH: ${{ github.workspace }}/app
+      DATABASE_URL: postgresql://admin:realhermes88@localhost:5432/realestate
+      PYTHONPATH:    ${{ github.workspace }}/app
 
     steps:
       - name: Checkout repo
@@ -78,11 +101,11 @@ jobs:
           python-version: "3.10"
 
       - name: Install dependencies
-        run: |
-          pip install -r requirements.txt pytest
+        run: pip install -r requirements.txt pytest
 
       - name: Run tests
         run: pytest tests
+
 
         
 
