@@ -22,6 +22,12 @@ resource "aws_db_subnet_group" "pg" {
   subnet_ids = var.subnet_ids
 }
 
+variable "db_username" {
+  description = "Usuario de la base de datos PostgreSQL"
+  type        = string
+  default     = "admin"
+}
+
 resource "aws_db_instance" "pg" {
   identifier             = "sandbox-db"
   engine                 = "postgres"
