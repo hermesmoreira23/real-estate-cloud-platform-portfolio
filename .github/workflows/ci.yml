@@ -63,7 +63,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: docker-build
 
-    # Ponemos aquí las mismas credenciales que usas en Terraform
+
     env:
       PYTHONPATH: ${{ github.workspace }}/app
       DB_HOST:     localhost
@@ -98,7 +98,14 @@ jobs:
           python-version: "3.10"
 
       - name: Install dependencies
-        run: pip install -r requirements.txt pytest
+        run: |
+          pip install -r requirements.txt pytest black flake8
+
+      - name: Run black (format check)
+        run: black --check .
+
+      - name: Run flake8 (style check)
+        run: flake8 .
 
       - name: Test DB Connection
         working-directory: app
