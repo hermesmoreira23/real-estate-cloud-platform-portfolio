@@ -14,19 +14,12 @@ variable "subnet_ids" {
 
 variable "db_password" {
   description = "Password para Postgres"
-  type        = string
-  sensitive   = true
+  default     = "changeme"
 }
 
 resource "aws_db_subnet_group" "pg" {
   name       = "sandbox-pg-subnet-group"
   subnet_ids = var.subnet_ids
-}
-
-variable "db_username" {
-  description = "Usuario de la base de datos PostgreSQL"
-  type        = string
-  sensitive   = true
 }
 
 resource "aws_db_instance" "pg" {

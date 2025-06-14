@@ -77,8 +77,8 @@ jobs:
       postgres:
         image: postgres:15
         env:
+          POSTGRES_HOST_AUTH_METHOD: trust
           POSTGRES_USER:     ${{ secrets.TF_VAR_DB_USERNAME }}
-          POSTGRES_PASSWORD: ${{ secrets.TF_VAR_DB_PASSWORD }}
           POSTGRES_DB:       realestate
         ports:
           - 5432:5432
