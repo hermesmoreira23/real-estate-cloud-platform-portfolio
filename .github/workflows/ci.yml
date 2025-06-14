@@ -75,7 +75,7 @@ jobs:
       # Aquí sí podemos referirnos al output del job `terraform`:
       DB_HOST:    ${{ needs.terraform.outputs.rds_endpoint }}
       DB_USER:    ${{ secrets.TF_VAR_DB_USERNAME }}
-      DB_PASSWORD:${{ secrets.TF_VAR_DB_PASSWORD }}
+      DB_PASSWORD: ${{ secrets.TF_VAR_DB_PASSWORD }}
       DB_NAME:    realestate
       DB_PORT:    5432
 
