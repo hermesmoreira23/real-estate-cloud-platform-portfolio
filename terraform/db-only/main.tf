@@ -14,7 +14,8 @@ variable "subnet_ids" {
 
 variable "db_password" {
   description = "Password para Postgres"
-  default     = "changeme"
+  type        = string
+  sensitive   = true
 }
 
 resource "aws_db_subnet_group" "pg" {
@@ -25,7 +26,7 @@ resource "aws_db_subnet_group" "pg" {
 variable "db_username" {
   description = "Usuario de la base de datos PostgreSQL"
   type        = string
-  default     = "admin"
+  sensitive   = true
 }
 
 resource "aws_db_instance" "pg" {
