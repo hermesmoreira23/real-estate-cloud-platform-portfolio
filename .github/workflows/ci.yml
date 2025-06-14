@@ -46,7 +46,7 @@ jobs:
         working-directory: terraform
         run: terraform plan -var-file=terraform.tfvars
 
-        - name: Guardar plan en archivo
+      - name: Guardar plan en archivo
         working-directory: terraform
         run: terraform plan -out=tfplan
 
