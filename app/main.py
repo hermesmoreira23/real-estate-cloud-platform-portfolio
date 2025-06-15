@@ -41,18 +41,13 @@ def db_check(db: Session = Depends(get_db)) -> dict:
 
 
 @app.post("/properties/")
-def create_property(
-    property: schemas.PropertyCreate, db: Session = Depends(get_db)
-):
+def create_property(property: schemas.PropertyCreate, db: Session = Depends(get_db)):
     return crud.create_property(db=db, property=property)
 
 
 @app.get("/properties/")
-def read_properties(
-    skip: int = 0, limit: int = 10, db: Session = Depends(get_db)
-):
+def read_properties(skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
     return crud.get_properties(db, skip=skip, limit=limit)
 
 
 __all__ = ["app"]
-

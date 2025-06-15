@@ -13,10 +13,4 @@ def create_property(db: Session, property: schemas.PropertyCreate):
 
 
 def get_properties(db: Session, skip: int = 0, limit: int = 10):
-    return (
-        db.query(models.Property)
-        .offset(skip)
-        .limit(limit)
-        .all()
-    )
-
+    return db.query(models.Property).offset(skip).limit(limit).all()
