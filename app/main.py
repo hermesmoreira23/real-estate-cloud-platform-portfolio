@@ -10,7 +10,7 @@ import schemas
 
 app = FastAPI()
 
-# CORS (if you need it; you can remove this block if not).
+# CORS (if you need it; you can remove this block if not)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -52,4 +52,3 @@ def read_properties(skip: int = 0, limit: int = 10, db: Session = Depends(get_db
 
 
 __all__ = ["app"]
-
