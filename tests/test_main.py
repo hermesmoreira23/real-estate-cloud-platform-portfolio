@@ -1,7 +1,9 @@
 import os
 import sys
 
-# Ajuste de path para importar desde /app
+from fastapi.testclient import TestClient
+
+# Inyectamos /app en el path para que el import funcione
 sys.path.insert(
     0,
     os.path.abspath(
@@ -13,10 +15,10 @@ sys.path.insert(
     ),
 )
 
-from fastapi.testclient import TestClient
-from main import app  # importa directamente app/main.py
+from main import app  # noqa: E402
 
 client = TestClient(app)
+
 
 def test_read_root():
     response = client.get("/")

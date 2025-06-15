@@ -1,10 +1,14 @@
 from fastapi import FastAPI, Depends
-from sqlalchemy.orm import Session
 from sqlalchemy import text
+from sqlalchemy.orm import Session
+
+import crud
+import models
+import schemas
 from db_config import SessionLocal
-import models, crud, schemas
 
 app = FastAPI()
+
 
 def get_db():
     db = SessionLocal()
@@ -13,9 +17,11 @@ def get_db():
     finally:
         db.close()
 
+
 @app.get("/")
 def read_root():
     return {"message": "Hello, Real Estate Cloud!"}
+
 
 @app.get("/db-check")
 def db_check(db: Session = Depends(get_db)):
@@ -25,17 +31,19 @@ def db_check(db: Session = Depends(get_db)):
     except Exception as e:
         return {"db_status": "Error de conexión", "error": str(e)}
 
+
 @app.post("/properties/")
 def create_property(
-    property: schemas.PropertyCreate,
-    db: Session = Depends(get_db)
+    property: schemas.PropertyCreate, db: Session = Depends(get_db)
 ):
     return crud.create_property(db=db, property=property)
+
 
 @app.get("/properties/")
 def read_properties(
     skip: int = 0, limit: int = 10, db: Session = Depends(get_db)
 ):
     return crud.get_properties(db, skip=skip, limit=limit)
+
 
 __all__ = ["app"]
