@@ -1,10 +1,9 @@
-# tests/test_main.py
-
 import os
 import sys
+
 from fastapi.testclient import TestClient
 
-# Add the app folder to PYTHONPATH so we can import main.py directly
+# Inject the `app/` folder into PYTHONPATH so we can import `main.py` directly
 sys.path.insert(
     0,
     os.path.abspath(
