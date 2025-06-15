@@ -1,12 +1,9 @@
-# tests/test_main.py
-
 import os
 import sys
+import pytest
+from fastapi.testclient import TestClient
 
-# 1) __file__ es tests/test_main.py
-# 2) dirname(__file__) → tests/
-# 3) os.path.join(..., "..", "app") → ../app
-# 4) abspath → ruta absoluta a tu carpeta app/
+# Ajustamos PATH para que pytest encuentre el paquete app
 sys.path.insert(
     0,
     os.path.abspath(
@@ -18,8 +15,7 @@ sys.path.insert(
     ),
 )
 
-from fastapi.testclient import TestClient
-from main import app  # ahora importa app/main.py directamente
+from main import app  # importa directamente app/main.py
 
 client = TestClient(app)
 
@@ -28,3 +24,4 @@ def test_read_root():
     response = client.get("/")
     assert response.status_code == 200
     assert response.json() == {"message": "Hello, Real Estate Cloud!"}
+
