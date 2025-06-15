@@ -10,7 +10,7 @@ import schemas
 
 app = FastAPI()
 
-# CORS (if you need it; you can remove this block if not)
+# CORS (if you need it; you can remove this block if not).
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
