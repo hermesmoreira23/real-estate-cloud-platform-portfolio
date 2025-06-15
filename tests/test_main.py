@@ -1,21 +1,22 @@
 import os
 import sys
 
-import pytest
-from fastapi.testclient import TestClient
-
-# Ajuste de PATH para que pytest encuentre app/main.py
+# Ajuste de path para importar desde /app
 sys.path.insert(
     0,
     os.path.abspath(
-        os.path.join(os.path.dirname(__file__), "..", "app"),
+        os.path.join(
+            os.path.dirname(__file__),
+            "..",
+            "app",
+        )
     ),
 )
 
-from main import app  # noqa: E402
+from fastapi.testclient import TestClient
+from main import app  # importa directamente app/main.py
 
 client = TestClient(app)
-
 
 def test_read_root():
     response = client.get("/")
