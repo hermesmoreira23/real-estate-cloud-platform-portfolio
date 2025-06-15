@@ -1,4 +1,5 @@
 from sqlalchemy.orm import Session
+
 import models
 import schemas
 
@@ -11,10 +12,11 @@ def create_property(db: Session, property: schemas.PropertyCreate):
     return db_property
 
 
-def get_properties(
-    db: Session,
-    skip: int = 0,
-    limit: int = 10,
-):
-    return db.query(models.Property).offset(skip).limit(limit).all()
+def get_properties(db: Session, skip: int = 0, limit: int = 10):
+    return (
+        db.query(models.Property)
+        .offset(skip)
+        .limit(limit)
+        .all()
+    )
 

@@ -1,20 +1,22 @@
-from fastapi import FastAPI, Depends, HTTPException
+from fastapi import Depends, FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from sqlalchemy.orm import Session
 from sqlalchemy import text
+from sqlalchemy.orm import Session
 
+import crud
+import schemas
 from db_config import SessionLocal
-import crud, schemas
+
 
 app = FastAPI()
 
-# (si tienes CORS, configúralo aquí; si no, puedes eliminar esta sección)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 
 def get_db():
     db = SessionLocal()
@@ -26,38 +28,28 @@ def get_db():
 
 @app.get("/")
 def read_root() -> dict:
-    return {
-        "message": "Hello, Real Estate Cloud!"
-    }
+    return {"message": "Hello, Real Estate Cloud!"}
 
 
 @app.get("/db-check")
 def db_check(db: Session = Depends(get_db)) -> dict:
     try:
         db.execute(text("SELECT 1"))
-        return {
-            "db_status": "Conexión exitosa a PostgreSQL"
-        }
+        return {"db_status": "Conexión exitosa a PostgreSQL"}
     except Exception as e:
-        return {
-            "db_status": "Error de conexión",
-            "error": str(e),
-        }
+        return {"db_status": "Error de conexión", "error": str(e)}
 
 
 @app.post("/properties/")
 def create_property(
-    property: schemas.PropertyCreate,
-    db: Session = Depends(get_db)
+    property: schemas.PropertyCreate, db: Session = Depends(get_db)
 ):
     return crud.create_property(db=db, property=property)
 
 
 @app.get("/properties/")
 def read_properties(
-    skip: int = 0,
-    limit: int = 10,
-    db: Session = Depends(get_db)
+    skip: int = 0, limit: int = 10, db: Session = Depends(get_db)
 ):
     return crud.get_properties(db, skip=skip, limit=limit)
 
