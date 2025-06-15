@@ -2,10 +2,10 @@ from fastapi import FastAPI, Depends
 from sqlalchemy import text
 from sqlalchemy.orm import Session
 
-import crud
-import models
-import schemas
 from db_config import SessionLocal
+import crud
+import schemas
+
 
 app = FastAPI()
 
