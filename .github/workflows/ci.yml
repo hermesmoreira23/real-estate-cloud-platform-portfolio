@@ -58,6 +58,12 @@ jobs:
             --tag real-estate-app:latest \
             .
 
+      - name: Tag & push image to ECR
+        run: |
+          IMAGE_URI=${{ steps.login-ecr.outputs.registry }}/real-estate-app:${{ github.sha }}
+          docker tag real-estate-app:latest $IMAGE_URI
+          docker push $IMAGE_URI
+
   app-test:
     name: FastAPI App Tests
     runs-on: ubuntu-latest
