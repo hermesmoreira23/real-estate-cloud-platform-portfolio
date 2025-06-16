@@ -2,6 +2,7 @@ variable "key_name" {
   description = "SSH key name to access EC2"
   type        = string
 }
+
 variable "db_username" {
   description = "Nombre de usuario para la base de datos PostgreSQL"
   type        = string
@@ -134,4 +135,39 @@ variable "acm_certificate_arn" {
   description = "ARN del certificado ACM para el listener HTTPS del ALB"
   type        = string
   default     = ""
+}
+
+variable "aws_account_id" {
+  description = "ID de la cuenta AWS"
+  type        = string
+}
+
+variable "cluster_name" {
+  description = "Nombre del cluster ECS"
+  type        = string
+}
+
+variable "service_name" {
+  description = "Nombre del servicio ECS"
+  type        = string
+}
+
+variable "container_port" {
+  description = "Puerto en el que escucha el contenedor"
+  type        = number
+}
+
+variable "desired_count" {
+  description = "Número de instancias Fargate deseadas"
+  type        = number
+}
+
+variable "alb_security_group_id" {
+  description = "Security Group ID para el ALB"
+  type        = string
+}
+
+variable "ecs_security_group_id" {
+  description = "Security Group ID para las tareas ECS"
+  type        = string
 }
