@@ -43,13 +43,22 @@ jobs:
         run: terraform plan -no-color
 
   docker-build:
-    name: Build Docker Image
+    name: Build, Tag & Push Docker Image to ECR
     runs-on: ubuntu-latest
     needs: terraform
+    env:
+      AWS_REGION: eu-west-1
 
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id:     ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region:            ${{ env.AWS_REGION }}
 
       - name: Build Docker image
         run: |
@@ -58,9 +67,10 @@ jobs:
             --tag real-estate-app:latest \
             .
 
-      - name: Tag & push image to ECR
+      - name: Tag & push image to ECR (dinámico)
         run: |
-          REGISTRY=${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com
+          ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
+          REGISTRY=$ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com
           IMAGE_URI=$REGISTRY/real-estate-app:${{ github.sha }}
           docker tag real-estate-app:latest $IMAGE_URI
           docker push $IMAGE_URI
@@ -70,23 +80,23 @@ jobs:
     runs-on: ubuntu-latest
     needs: docker-build
 
-
     env:
-      PYTHONPATH: ${{ github.workspace }}/app
-      DB_HOST:     localhost
-      DB_USER:     ${{ secrets.TF_VAR_DB_USERNAME }}
-      DB_PASSWORD: ${{ secrets.TF_VAR_DB_PASSWORD }}
-      POSTGRES_HOST_AUTH_METHOD: trust
-      DB_NAME:     realestate
-      DB_PORT:     5432
+      PYTHONPATH:                 ${{ github.workspace }}/app
+      DB_HOST:                    localhost
+      DB_USER:                    ${{ secrets.TF_VAR_DB_USERNAME }}
+      DB_PASSWORD:                ${{ secrets.TF_VAR_DB_PASSWORD }}
+      POSTGRES_HOST_AUTH_METHOD:  trust
+      DB_NAME:                    realestate
+      DB_PORT:                    5432
 
     services:
       postgres:
         image: postgres:15
         env:
           POSTGRES_HOST_AUTH_METHOD: trust
-          POSTGRES_USER:     ${{ secrets.TF_VAR_DB_USERNAME }}
-          POSTGRES_DB:       realestate
+          POSTGRES_USER:               ${{ secrets.TF_VAR_DB_USERNAME }}
+          POSTGRES_PASSWORD:           ${{ secrets.TF_VAR_DB_PASSWORD }}
+          POSTGRES_DB:                 realestate
         ports:
           - 5432:5432
         options: >-
@@ -105,7 +115,8 @@ jobs:
           python-version: "3.10"
 
       - name: Install dependencies
-        run: pip install -r requirements.txt
+        run: |
+          pip install -r requirements.txt pytest black flake8
 
       - name: Check formatting with Black
         run: black --check .
@@ -127,6 +138,7 @@ jobs:
 
       - name: Run tests
         run: pytest tests
+
 
 
 
