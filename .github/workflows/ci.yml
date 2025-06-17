@@ -153,6 +153,8 @@ jobs:
     needs: docker-build
     env:
       AWS_REGION: eu-west-1
+      CLUSTER_NAME:  real-estate-cluster
+      SERVICE_NAME:  real-estate-service 
 
     steps:
       - name: Checkout code
