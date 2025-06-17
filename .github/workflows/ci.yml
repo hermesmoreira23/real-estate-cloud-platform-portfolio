@@ -154,7 +154,7 @@ jobs:
     env:
       AWS_REGION: eu-west-1
       CLUSTER_NAME:  real-estate-cluster
-      SERVICE_NAME:  real-estate-service 
+      SERVICE_NAME:  real-estate-service
 
     steps:
       - name: Checkout code
@@ -169,11 +169,9 @@ jobs:
 
       - name: Update ECS service
         run: |
-          aws ecs update-service \
-            --cluster ${{ secrets.ECS_CLUSTER_NAME }} \
-            --service ${{ secrets.ECS_SERVICE_NAME }} \
-            --force-new-deployment \
-            --region ${{ env.AWS_REGION }}
+          aws ecs update-service
+
+
 
             
 
