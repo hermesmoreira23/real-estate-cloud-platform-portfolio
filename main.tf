@@ -82,12 +82,6 @@ module "ecs" {
   aws_region             = var.aws_region
 }
 
-
-output "ecs_log_group_name" {
-  description = "Nombre del grupo de logs para ECS en CloudWatch"
-  value       = "/ecs/${var.cluster_name}"
-}
-
 # ——— Módulo de monitoreo con CloudWatch ———
 module "monitoring" {
   source          = "./monitoring"

@@ -1,4 +1,5 @@
 version: "3.9"
+
 services:
   app:
     build:
@@ -10,11 +11,10 @@ services:
       - db
     networks:
       - realestate-net
-    # desactiva esto si no tienes .env
-    # env_file:
-    #   - ./app/.env
+    env_file:
+      - ./app/.env  # ✅ ahora se activan las variables del .env
 
-  db:
+  db:  # ❌ Desactiva este servicio si vas a usar RDS real (opcional)
     image: postgres:15
     environment:
       POSTGRES_DB: realestate

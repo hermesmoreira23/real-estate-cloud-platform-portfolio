@@ -1,36 +1,53 @@
-variable "key_name" {
-  description = "SSH key name to access EC2"
+# ─────────────────────────────
+# 🔐 Credenciales y acceso
+# ─────────────────────────────
+variable "aws_region" {
+  description = "Región de AWS"
+  type        = string
+  default     = "eu-west-1"
+}
+
+variable "aws_account_id" {
+  description = "ID de la cuenta AWS"
   type        = string
 }
 
-variable "db_username" {
-  description = "Nombre de usuario para la base de datos PostgreSQL"
+variable "key_name" {
+  description = "Nombre del par de llaves SSH para EC2"
   type        = string
 }
 
 variable "my_ip_cidr" {
-  description = "Tu IP pública con notación CIDR para acceso SSH"
+  description = "Tu IP pública en formato CIDR (ej: 1.2.3.4/32)"
   type        = string
 }
 
+# ─────────────────────────────
+# 💾 Base de datos (RDS PostgreSQL)
+# ─────────────────────────────
 variable "db_name" {
   description = "Nombre de la base de datos PostgreSQL"
   type        = string
 }
 
+variable "db_username" {
+  description = "Usuario administrador de la base de datos"
+  type        = string
+}
+
 variable "db_password" {
-  description = "Contraseña del usuario administrador de la base de datos"
+  description = "Contraseña del usuario administrador"
   type        = string
   sensitive   = true
 }
 
 variable "db_instance_class" {
-  description = "Tipo de instancia de la base de datos"
+  description = "Clase de instancia RDS (ej: db.t3.micro)"
   type        = string
 }
 
 variable "db_allocated_storage" {
-  description = "Espacio de almacenamiento en GB"
+  description = "Almacenamiento asignado en GB"
   type        = number
 }
 
@@ -39,111 +56,103 @@ variable "db_engine_version" {
   type        = string
 }
 
+# ─────────────────────────────
+# 🌐 Red y subredes (VPC)
+# ─────────────────────────────
 variable "vpc_name" {
-  description = "Nombre para la VPC"
+  description = "Nombre de la VPC"
   type        = string
 }
 
 variable "vpc_cidr_block" {
-  description = "CIDR block para la VPC"
-  type        = string
-}
-
-variable "public_subnet_cidr" {
-  description = "CIDR block para la subnet pública"
-  type        = string
-}
-
-variable "availability_zone" {
-  description = "Zona de disponibilidad para la subnet"
-  type        = string
-}
-
-variable "subnet_name" {
-  description = "Nombre de la subnet pública"
-  type        = string
-}
-
-variable "private_subnet_cidr" {
-  description = "CIDR para la subred privada"
-  type        = string
-}
-
-variable "public_subnet_id" {
-  description = "ID de la subred pública para la EC2"
-  type        = string
-}
-
-variable "security_group_id" {
-  description = "ID del security group para EC2"
-  type        = string
-}
-
-variable "ec2_role_name" {
-  description = "IAM Role name para la instancia EC2"
-  type        = string
-}
-
-variable "private_subnet_ids" {
-  description = "IDs de las subredes privadas"
-  type        = list(string)
-}
-
-variable "db_security_group_id" {
-  description = "Grupo de seguridad para RDS"
-  type        = string
-}
-
-variable "ec2_instance_id" {
-  description = "ID de la instancia EC2 a monitorizar"
+  description = "Bloque CIDR para la VPC"
   type        = string
 }
 
 variable "vpc_id" {
-  description = "VPC ID para asociar con los recursos"
+  description = "ID de la VPC"
   type        = string
 }
 
+variable "availability_zone" {
+  description = "Zona de disponibilidad AWS (ej: eu-west-1a)"
+  type        = string
+}
+
+variable "public_subnet_cidr" {
+  description = "CIDR para la subnet pública"
+  type        = string
+}
+
+variable "private_subnet_cidr" {
+  description = "CIDR para la subnet privada"
+  type        = string
+}
+
+variable "subnet_name" {
+  description = "Nombre para la subnet pública"
+  type        = string
+}
+
+variable "public_subnet_id" {
+  description = "ID de la subnet pública para EC2"
+  type        = string
+}
+
+variable "private_subnet_ids" {
+  description = "Lista de IDs de subredes privadas"
+  type        = list(string)
+}
+
+# ─────────────────────────────
+# 🔐 Seguridad (Security Groups e IAM)
+# ─────────────────────────────
+variable "security_group_id" {
+  description = "ID del Security Group para EC2"
+  type        = string
+}
+
+variable "db_security_group_id" {
+  description = "ID del Security Group para RDS"
+  type        = string
+}
+
+variable "alb_security_group_id" {
+  description = "ID del Security Group para ALB"
+  type        = string
+}
+
+variable "ecs_security_group_id" {
+  description = "ID del Security Group para tareas ECS"
+  type        = string
+}
+
+variable "ec2_role_name" {
+  description = "Nombre del rol IAM para EC2"
+  type        = string
+}
+
+# ─────────────────────────────
+# 🖥️ EC2 y Monitoreo
+# ─────────────────────────────
+variable "ec2_instance_id" {
+  description = "ID de la instancia EC2 para alarmas"
+  type        = string
+}
+
+# ─────────────────────────────
+# 🪣 Almacenamiento
+# ─────────────────────────────
 variable "bucket_name" {
   description = "Nombre único para el bucket S3"
   type        = string
 }
 
-variable "project_tag" {
-  description = "Tag del proyecto"
-  type        = string
-}
-
-variable "environment" {
-  description = "Entorno (dev, prod, etc.)"
-  type        = string
-}
-
-variable "aws_region" {
-  description = "AWS region"
-  type        = string
-  default     = "eu-west-1"
-}
-
-variable "image_tag" {
-  description = "Tag de la imagen Docker a desplegar en ECS"
-  type        = string
-  default     = "latest"
-}
-
-variable "acm_certificate_arn" {
-  description = "ARN del certificado ACM para el listener HTTPS del ALB"
-  type        = string
-  default     = ""
-}
-
-variable "aws_account_id" {
-  description = "ID de la cuenta AWS"
-  type        = string
-}
-
+# ─────────────────────────────
+# 🐳 ECS y despliegue de contenedores
+# ─────────────────────────────
 variable "cluster_name" {
-  description = "Nombre del cluster ECS"
+  description = "Nombre del ECS Cluster"
   type        = string
 }
 
@@ -153,21 +162,36 @@ variable "service_name" {
 }
 
 variable "container_port" {
-  description = "Puerto en el que escucha el contenedor"
+  description = "Puerto expuesto por el contenedor"
   type        = number
 }
 
 variable "desired_count" {
-  description = "Número de instancias Fargate deseadas"
+  description = "Número de tareas Fargate deseadas"
   type        = number
 }
 
-variable "alb_security_group_id" {
-  description = "Security Group ID para el ALB"
+variable "image_tag" {
+  description = "Tag de la imagen Docker (ej: latest, commit SHA)"
+  type        = string
+  default     = "latest"
+}
+
+variable "acm_certificate_arn" {
+  description = "ARN del certificado SSL (ACM) para HTTPS en ALB"
+  type        = string
+  default     = ""
+}
+
+# ─────────────────────────────
+# 🏷️ Etiquetas generales
+# ─────────────────────────────
+variable "project_tag" {
+  description = "Etiqueta del proyecto (usada en tags)"
   type        = string
 }
 
-variable "ecs_security_group_id" {
-  description = "Security Group ID para las tareas ECS"
+variable "environment" {
+  description = "Entorno del despliegue (dev, staging, prod)"
   type        = string
 }

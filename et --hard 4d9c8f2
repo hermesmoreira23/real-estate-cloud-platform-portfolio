@@ -1,0 +1,239 @@
+* [33mbc8c283[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m chore: eliminando submódulo terraform
+* [33m014f1ab[m 🚀 Proyecto limpio: Real Estate Cloud con CI/CD y Terraform
+* [33m279d485[m[33m ([m[1;31morigin/main[m[33m)[m Comentar job ecs-deploy: despliegue en ECS desactivado hasta validación local
+* [33m9601ef8[m Agrega variables CLUSTER_NAME y SERVICE_NAME al paso ecs-deploy para corregir despliegue en ECS
+* [33m1b75451[m Agrega variables CLUSTER_NAME y SERVICE_NAME al paso ecs-deploy para corregir despliegue en ECS
+* [33me16be51[m Agrega variables CLUSTER_NAME y SERVICE_NAME al paso ecs-deploy para corregir despliegue en ECS
+* [33m6905ae1[m feat(terraform): añadir módulos de infraestructura (VPC, RDS, ECS Fargate, ALB, S3, monitoring) y actualizar CI/CD
+* [33m618009d[m feat(terraform): añadir módulos de infraestructura (VPC, RDS, ECS Fargate, ALB, S3, monitoring) y actualizar CI/CD
+* [33m036ab11[m feat(terraform): añadir módulos de infraestructura (VPC, RDS, ECS Fargate, ALB, S3, monitoring) y actualizar CI/CD
+* [33me70a133[m ci: corregir etiqueta y push a ECR usando AWS_ACCOUNT_ID y AWS_REGION
+* [33mcf0c80e[m ci: corregir etiqueta y push a ECR usando AWS_ACCOUNT_ID y AWS_REGION
+* [33m98dbb4c[m ci: corregir etiqueta y push a ECR usando AWS_ACCOUNT_ID y AWS_REGION
+* [33m541c42c[m ci: añadir push de imagen Docker a ECR
+* [33m47c303d[m chore: formatea código con Black
+* [33m149544f[m chore: formatea código con Black
+* [33m58b3c83[m chore: formatea código con Black
+* [33m5c127ca[m chore: apply Black formatting to app and tests
+* [33mc29b9d2[m chore: apply Black formatting to app and tests
+* [33mcfd1470[m chore: apply Black formatting to app and tests
+* [33m8381681[m chore: apply Black formatting to app and tests
+* [33m426ea4c[m chore: apply Black formatting to app and tests
+* [33me7cae58[m chore: apply Black formatting to app and tests
+* [33ma97482a[m chore: apply Black formatting to app and tests
+* [33m0d19c12[m chore: apply Black formatting to app and tests
+* [33m5b494c3[m chore: apply Black formatting to app and tests
+* [33m7a94170[m chore(ci): formatea con Black y corrige imports/líneas para Flake8
+* [33me515074[m fix: corregir imports y ajustar líneas para pasar lint (flake8)
+* [33m02cc75e[m chore(ci): install flake8 and fix lint errors (split imports, remove unused, move imports, wrap lines)
+* [33m3f6b2f6[m chore(ci): add Black to requirements and CI, apply formatting
+* [33m3701097[m chore(ci): install black in CI so black --check no falle
+* [33m4c2f564[m chore(ci): add black and flake8 lint checks to FastAPI CI pipeline
+* [33m7803c2c[m Test 4
+* [33mbec989c[m Test 4
+* [33m8115c4f[m Test 4
+* [33m2eaa18c[m Test 4
+* [33m616e692[m Test 4
+* [33mfb2e6ca[m Test 4
+* [33m770d31d[m Test 4
+* [33m3161539[m Test 4
+* [33me9942c1[m Test 4
+* [33m0e43be9[m Test 4
+* [33mb6196c4[m Test 4
+* [33m1f7e649[m Test 4
+* [33m2f3aa7e[m Test 4
+* [33m5dc1252[m Test 4
+* [33maff3edc[m Test 4
+* [33m3614440[m Test 4
+* [33mcb653a7[m Test 4
+* [33mff75d96[m Test 4
+* [33m5fcb188[m Test 4
+* [33mbcd5b2e[m Test 4
+* [33m76a04e6[m Test 4
+* [33m379a9fb[m Test 4
+* [33mff4cfba[m Test 4
+* [33mdfc44c9[m Test 4
+* [33mc912b61[m Test 4
+* [33m1eac284[m Test 4
+* [33m34cdf26[m Test 4
+* [33mcf329fa[m Test 4
+* [33m9e3fb13[m Test 4
+* [33m49d4ce5[m Test 4
+* [33m3e14f2c[m Test 4
+* [33m54244ff[m Test 4
+* [33m82b0c06[m Test 4
+* [33me3d16ea[m Test 4
+* [33m71b8d35[m ci: usar -chdir y ruta correcta para terraform.tfvars
+* [33m043d2ae[m ci: usar -chdir y ruta correcta para terraform.tfvars
+* [33m31127ec[m ci: corregir ruta de terraform.tfvars en CI
+* [33ma0db8de[m ci: restaurar workflow CI con variables TF_VAR y dry-run Terraform
+* [33me3b8271[m ci: restaurar workflow CI con variables TF_VAR y dry-run Terraform
+* [33m0fce7d8[m ci: debug tfvars before plan
+* [33m8948f5c[m ci: debug tfvars before plan
+* [33md1f42a3[m ci: debug tfvars before plan
+* [33mba1d6c5[m ci: debug tfvars before plan
+* [33mbc644ff[m ci: debug tfvars before plan
+* [33m0594bc5[m ci: debug tfvars before plan
+* [33m3c5a931[m ci: debug tfvars before plan
+* [33mb2d525c[m ci: debug tfvars before plan
+* [33m9b8f969[m ci: include -var-file for terraform plan
+* [33m8c10cbf[m ci: fix terraform plan invocation formatting
+* [33m86893db[m ci: remove -get=false so modules install correctly
+* [33m677419c[m ci: fix terraform dry-run to be non-interactive
+* [33m7d29e6a[m ci: ensure terraform.tfvars present in terraform folder
+* [33m390b1dc[m ci: ensure terraform.tfvars present in terraform folder
+* [33m10e7c01[m feat: add ECS/Fargate Terraform module and update CI workflow
+* [33m9ef9598[m feat: add ECS/Fargate Terraform module and update CI workflow
+* [33m7cbe2c4[m feat: add ECS/Fargate Terraform module and update CI workflow
+* [33m39f1404[m feat: add ECS/Fargate Terraform module and update CI workflow
+* [33m352f37c[m feat: add ECS/Fargate Terraform module and update CI workflow
+* [33mddff95a[m ci: unificar Terraform, Docker build y tests en un solo workflow
+* [33m1cee367[m ci: unificar Terraform, Docker build y tests en un solo workflow
+* [33m0b3db43[m ci: incluir terraform.tfvars y corregir ruta en CI
+* [33m49989d4[m ci: versionar solo tfvars públicos y mover secretos a GitHub Secrets
+* [33m4ff00fe[m ci: versionar solo tfvars públicos y mover secretos a GitHub Secrets
+* [33mfefd995[m ci: restore terraform.tfvars usage for plan
+* [33m0ab90c5[m ci: restore terraform.tfvars usage for plan
+* [33m9bdff71[m ci: restore terraform.tfvars usage for plan
+* [33m77daaac[m ci: restore terraform.tfvars usage for plan
+* [33ma61b435[m ci: restore terraform.tfvars usage for plan
+* [33m010762f[m ci: fix terraform plan flags formatting
+* [33mf98a574[m ci: fix terraform plan flags and use working-directory
+* [33mecf2796[m ci: remove explicit var-file, allow tfvars auto-loading
+* [33mc167f1c[m ci: remove explicit var-file, allow tfvars auto-loading
+* [33m87dcfa3[m ci: remove explicit var-file, allow tfvars auto-loading
+* [33mc804b40[m ci: remove explicit var-file, allow tfvars auto-loading
+* [33m3203e15[m ci: revert to using terraform.tfvars for plan
+* [33me39b04d[m ci: Unify Terraform, Docker build & FastAPI tests in one workflow
+* [33m8b88e03[m ci: Unify Terraform, Docker build & FastAPI tests in one workflow
+* [33mc56bfa5[m ci: Unify Terraform, Docker build & FastAPI tests in one workflow
+* [33md764e8f[m ci: Unify Terraform, Docker build & FastAPI tests in one workflow
+* [33m6e42cdc[m ci: Unify Terraform, Docker build & FastAPI tests in one workflow
+* [33m62c8666[m ci: restore build-test and FastAPI jobs; add full & db-only Terraform plans
+* [33mc0c700e[m ci: add Terraform DB sandbox plan job and update CI workflows
+* [33m09297e1[m fix(ci): set PYTHONPATH and correct Docker build context in CI workflow
+* [33mb25996d[m fix(ci): set PYTHONPATH and correct Docker build context in CI workflow
+* [33m3c29f0d[m fix(ci): set PYTHONPATH and correct Docker build context in CI workflow
+* [33m14e29ba[m fix(ci): set PYTHONPATH and correct Docker build context in CI workflow
+* [33me7ddb00[m ci: remove old Terraform-only workflow
+* [33m2870498[m ci: remove old Terraform-only workflow
+* [33mb0e3140[m ci: unify CI – Terraform plan, Docker build & FastAPI tests
+* [33mfb71f0e[m ci: fix Terraform plan with -chdir and multiline vars
+* [33m0f55bc9[m ci: fix Terraform plan with -chdir and multiline vars
+* [33ma775392[m ci: fix Terraform plan with -chdir and multiline vars
+* [33mbce2906[m ci: fix Terraform plan with -chdir and multiline vars
+* [33m81b5020[m ci: fix Terraform plan with -chdir and multiline vars
+* [33m8987345[m ci: fix Terraform plan with -chdir and multiline vars
+* [33m7e81fe2[m ci: fix Terraform plan with -chdir and multiline vars
+* [33m8941148[m ci: fix Terraform plan with -chdir and multiline vars
+* [33m5340ca1[m ci: fix Terraform plan with -chdir and multiline vars
+* [33ma8350cf[m CI: add Terraform plan, build Docker from app/Dockerfile, run FastAPI tests
+* [33m1fe9cec[m CI: add Terraform plan, build Docker from app/Dockerfile, run FastAPI tests
+* [33mfa8b8d8[m CI: add Terraform plan, build Docker from app/Dockerfile, run FastAPI tests
+* [33ma5cd9cb[m test3
+* [33m34811e8[m test3
+* [33m903da62[m CI: add Terraform plan, build Docker from app/Dockerfile, run FastAPI tests
+* [33m9e1a415[m CI: add Terraform plan, build Docker from app/Dockerfile, run FastAPI tests
+* [33m3340330[m test2
+* [33m50a25a8[m test2
+* [33meee181e[m ci: usar build en una sola línea con --file app/Dockerfile
+* [33mddc9a9f[m ci: usar build en una sola línea con --file app/Dockerfile
+* [33m0e55e81[m ci: usar build en una sola línea con --file app/Dockerfile
+* [33m4161f25[m ci: usar build en una sola línea con --file app/Dockerfile
+* [33maf84ce4[m ci: usar build en una sola línea con --file app/Dockerfile
+* [33m2a4f8c2[m ci: usar build en una sola línea con --file app/Dockerfile
+* [33md1775cb[m ci: usar build en una sola línea con --file app/Dockerfile
+* [33m5a4ebba[m ci: usar build en una sola línea con --file app/Dockerfile
+* [33m506f2a7[m ci: apuntar a app/Dockerfile y debug workspace
+* [33mff90e3c[m ci: apuntar a app/Dockerfile y debug workspace
+* [33md6a9b4e[m ci: usar --file app/Dockerfile en build
+* [33m42a599f[m ci: usar --file app/Dockerfile en build
+* [33mef58ddc[m ci: usar --file app/Dockerfile en build
+* [33m39b7ea6[m ci: usar --file app/Dockerfile en build
+* [33mb13a5d0[m tests
+* [33mbe5a7db[m fix(test): inyectar app/ en PYTHONPATH para test_main
+* [33m0b246b9[m tests
+* [33m1081364[m tests
+* [33m8c0b14e[m tests
+* [33m339067f[m tests
+* [33mf73c14b[m tests
+* [33m628fbf2[m chore: add CI workflow
+* [33mbdec250[m setup GitHub Actions for Terraform plan, Docker build & FastAPI tests
+* [33mc8bd4c9[m Move create_all into startup event to avoid DB connect on import
+* [33m44b7469[m Move tests into app/ and adjust CI working-directory
+* [33m15db9e2[m Move tests into app/ and adjust CI working-directory
+* [33me38f758[m Move tests into app/ and adjust CI working-directory
+* [33m4c9ada6[m Move tests into app/ and adjust CI working-directory
+* [33m8ecaf59[m Move tests into app/ and adjust CI working-directory
+* [33med87d5d[m Move tests into app/ and adjust CI working-directory
+* [33ma3091ca[m Move tests into app/ and adjust CI working-directory
+* [33m8bca5dc[m FastAPI Dockerized Backend with PostgreSQL
+* [33m6b820d3[m FastAPI Dockerized Backend with PostgreSQL
+* [33m6077c45[m FastAPI Dockerized Backend with PostgreSQL
+* [33m397e67f[m FastAPI Dockerized Backend with PostgreSQL
+* [33m583a86e[m FastAPI Dockerized Backend with PostgreSQL
+* [33m3ed4af1[m Corrige errores en modulos
+* [33m432b96e[m test: trigger workflow for AWS secrets
+* [33md4f54ab[m test: trigger workflow for AWS secrets
+* [33m27229a9[m test: trigger workflow for AWS secrets
+* [33m2e1f2c1[m test: trigger workflow for AWS secret
+* [33m3e7f90f[m test: trigger workflow for AWS secrets
+* [33m556c146[m test: trigger workflow for AWS secret
+* [33m6b5f54f[m test: trigger workflow for AWS secrets
+* [33mad477a0[m test: trigger workflow for AWS secrets
+* [33mc53c186[m test: trigger workflow for AWS secrets
+* [33m1d8eeba[m test: trigger workflow for AWS secrets
+* [33m0679aa5[m test: trigger workflow for AWS secrets
+* [33m5e809ef[m fix: Corrige paso de plan error con el var
+* [33mb54249d[m fix: Corrige paso de plan error con el var
+* [33m814c551[m fix: Corrige paso de plan error con el var
+* [33m3cdeb1b[m fix: Corrige paso de plan añadir provider
+* [33mc784da9[m fix: Corrige paso de plan añadir provider
+* [33m77767d0[m fix: Corrige paso de validate, elimina -var, con el plan
+* [33m3f0fee0[m fix: Corrige paso de validate, elimina -var, con el plan
+* [33m110f28f[m fix: Corrige paso de validate, elimina -var2
+* [33m08a3dd1[m fix: Corrige paso de validate, elimina -var2
+* [33m0c675c9[m fix: Corrige paso de validate, elimina -var2
+* [33m7eaef59[m fix: Corrige paso de validate, elimina -var2
+* [33m6038ab6[m fix: Corrige paso de validate, elimina -var2
+* [33m5568c44[m fix: Corrige paso de validate, elimina -var2
+* [33m14ee986[m fix: Corrige paso de validate, elimina -var2
+* [33mc3d389a[m fix: Corrige paso de validate, elimina -var2
+* [33ma6f3f30[m fix: Corrige paso de validate, elimina -var2
+* [33m6e9c34c[m fix: Corrige paso de validate, elimina -var
+* [33m43b34cc[m fix: Corrige paso de validate, elimina -var
+* [33m0f1bba8[m fix: Corrige paso de validate, elimina -var
+* [33m6fcf6f4[m fix: Corrige paso de validate, elimina -var, solo en plan
+* [33mde14fbc[m fix: Corrige paso de validate, elimina -var, solo en plan
+* [33mc6dca4c[m fix: Corrige paso de validate, elimina -var, solo en plan
+* [33m7fd23f3[m fix: Corrige paso de validate, elimina -var, solo en plan
+* [33m582a890[m fix: Corrige paso de validate, elimina -var, solo en plan
+* [33m8e21b03[m fix: Corrige paso de validate, elimina -var, solo en plan
+* [33macd6210[m fix: Corrige paso de validate, elimina -var, solo en plan
+* [33m2143b82[m fix: Corrige paso de validate, elimina -var, solo en plan
+* [33m5feec2f[m fix: Corrige paso de validate, elimina -var, solo en plan
+* [33m888c2f9[m fix: Actualiza workflow para pasar availability_zone por variable en Terraform CI/CD
+* [33me12ccca[m feat: Añadir workflow CI/CD para Terraform y Docker build/test
+* [33mf66ddd0[m Add Docker microservice and workflow
+* [33mc8e9269[m Add FastAPI microservice, Docker support, and Terraform CI/CD pipeline
+* [33mb6a72fc[m feat: cambio de directorio
+* [33mcfd8b35[m feat: cambio de directorio
+* [33m7d4b378[m feat: Añadir workflow de validación Terraform pipeline
+* [33m80315bb[m feat: Añadir pipeline básico de Terraform
+* [33mcebec8e[m feat: Infraestructura lista, integración IAM EC2-S3 completada, lista para CloudWatch
+* [33mf148c3b[m feat: Infraestructura lista, integración IAM EC2-S3 completada, lista para CloudWatch
+* [33md7c5916[m chore: guardar estado actual antes de integración IAM
+* [33m31def10[m chore: guardar infraestructura base y outputs validados antes de añadir S3
+* [33m4f019a1[m chore: eliminar repo .git anidado por error
+* [33mfde6c6f[m feat: Añadir todos los archivos de infraestructura tras limpieza de historial
+* [33m4c3f769[m chore: añadir reglas extra de seguridad al .gitignore
+* [33m2c90fe2[m feat: infraestructura base con EC2, VPC y SG configurados
+* [33m11bf743[m Actualiza .gitignore para ignorar terraform.tfvars y archivos locales
+* [33m1825d78[m Initial commit - Terraform AWS VPC and EC2 structure
+* [33m711e6a6[m Update .gitignore and add Terraform networking code
+* [33mb51ad42[m Limpieza de archivos grandes
+* [33m4166b09[m Commit limpio sin archivos pesados
+* [33m29ad952[m Agregar variables.tf y outputs.tf para modularizar infraestructura
+* [33me3092cf[m Añadir carpetas iniciales con .gitkeep
+* [33m3c4acac[m Nombre de Author
+* [33m9d72893[m Initial commit

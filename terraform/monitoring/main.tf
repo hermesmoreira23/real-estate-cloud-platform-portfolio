@@ -1,3 +1,6 @@
+# ===============================
+# Alarma de CPU para EC2
+# ===============================
 resource "aws_cloudwatch_metric_alarm" "ec2_cpu_high" {
   alarm_name          = "High-CPU-EC2"
   comparison_operator = "GreaterThanThreshold"
@@ -8,9 +11,58 @@ resource "aws_cloudwatch_metric_alarm" "ec2_cpu_high" {
   statistic           = "Average"
   threshold           = 70
   alarm_description   = "Alarma si la CPU de EC2 supera el 70% durante 10 minutos"
-  actions_enabled     = false 
+  actions_enabled     = false
+
   dimensions = {
     InstanceId = var.ec2_instance_id
   }
+
+  tags = {
+    Name        = "High-CPU-EC2"
+    Project     = var.project_tag
+    Environment = var.environment
+  }
+}
+
+# ===============================
+# Dashboard CloudWatch para ECS y ALB
+# ===============================
+resource "aws_cloudwatch_dashboard" "ecs_dashboard" {
+  dashboard_name = "ecs-${var.environment}-dashboard"
+
+  dashboard_body = jsonencode({
+    widgets = [
+      {
+        type = "metric",
+        x    = 0,
+        y    = 0,
+        width = 12,
+        height = 6,
+        properties = {
+          metrics = [
+            [ "AWS/ECS", "CPUUtilization", "ClusterName", var.cluster_name, { "stat": "Average" } ]
+          ],
+          period = 300,
+          title  = "ECS CPU Utilization",
+          region = var.aws_region
+        }
+      },
+      {
+        type = "metric",
+        x    = 12,
+        y    = 0,
+        width = 12,
+        height = 6,
+        properties = {
+          metrics = [
+            [ "AWS/ApplicationELB", "RequestCount", "LoadBalancer", var.alb_arn_suffix, { "stat": "Sum" } ]
+          ],
+          period = 300,
+          title  = "ALB Request Count",
+          region = var.aws_region
+        }
+      }
+    ]
+  })
 }
 
