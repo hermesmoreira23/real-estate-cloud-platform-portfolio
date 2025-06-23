@@ -1,60 +1,56 @@
 # === Terraform ===
-.terraform/
-*.tfstate
-*.tfstate.*
-terraform.tfstate.backup
-crash.log
-*.log
-override.tf
+.terraform/                     # Carpeta generada tras terraform init; no debe subirse
+*.tfstate                      # Archivos de estado de Terraform (almacenan infra creada)
+*.tfstate.*                    # Versiones alternativas o backups del estado
+terraform.tfstate.backup       # Backup automático del estado
+crash.log                      # Logs de errores de Terraform
+*.log                          # Logs generales que puedan generarse
+override.tf                    # Archivos de override locales
 override.tf.json
 *_override.tf
 *_override.tf.json
-.terraform.lock.hcl
-
-
+.terraform.lock.hcl            # Lockfile con las versiones exactas de proveedores
 
 # Terragrunt (opcional)
-.terragrunt-cache/
+.terragrunt-cache/             # Cache de Terragrunt si se usa como wrapper de Terraform
 
 # === Python / FastAPI ===
-__pycache__/
-*.pyc
+__pycache__/                   # Carpeta de caché generada por Python
+*.pyc                          # Bytecode compilado
 *.pyo
 *.pyd
-*.egg-info/
+*.egg-info/                    # Metadatos de paquetes locales
 .Python
-.env
-.venv/
+.env                           # Archivos de entorno con secretos o credenciales
+.venv/                         # Entornos virtuales
 venv/
 ENV/
 env/
 
 # === Docker ===
-*.log
-docker-compose.override.yml
+*.log                          # Logs del contenedor
+docker-compose.override.yml    # Archivo local para personalizar docker-compose
 
 # === Certificados, claves y otros archivos sensibles ===
-*.pem
-*.key
-*.tfplan
+*.pem                          # Claves públicas o privadas
+*.key                          # Archivos de clave privados
+*.tfplan                       # Planes de terraform (output temporal de `terraform plan`)
 
 # === Archivos temporales del sistema y editores ===
-*.swp
+*.swp                          # Swap files de Vim
 *.swo
-.DS_Store
-Thumbs.db
-.idea/
-.vscode/
+.DS_Store                      # Archivo oculto en macOS
+Thumbs.db                      # Miniaturas de Windows
+.idea/                         # Configuraciones de IntelliJ/PyCharm
+.vscode/                       # Configuración local de VSCode
 
 # === Otros (según tu stack) ===
-# Ignorar archivos de pruebas o backups automáticos
-*~
-*.bak
+*~                             # Archivos temporales (ej: script~)
+*.bak                          # Archivos de respaldo automáticos
 
 # === Node / NPM (por si añades cosas de frontend) ===
-node_modules/
-npm-debug.log*
+node_modules/                  # Dependencias descargadas de npm
+npm-debug.log*                 # Logs de errores de npm
 
 # === General ===
-# Ignorar archivos de configuración local o personalizados
-.local/
+.local/                        # Archivos de configuración o ejecución locales
