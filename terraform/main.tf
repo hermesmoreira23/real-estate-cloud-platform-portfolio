@@ -82,13 +82,15 @@ module "ecs" {
   aws_region             = var.aws_region
 }
 
-
+# Output del endpoint de la base de datos
+# - Esto se usará para conectar la app al RDS PostgreSQL.
 output "ecs_log_group_name" {
   description = "Nombre del grupo de logs para ECS en CloudWatch"
   value       = "/ecs/${var.cluster_name}"
 }
 
-# ——— Módulo de monitoreo con CloudWatch ———
+# Módulo de monitoreo con CloudWatch
+# - Incluye alarmas y dashboards para ECS y ALB
 module "monitoring" {
   source          = "./monitoring"
   ec2_instance_id = var.ec2_instance_id
