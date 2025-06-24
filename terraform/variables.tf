@@ -1,5 +1,5 @@
 # ─────────────────────────────
-# 🔐 Credenciales y acceso
+# Credenciales y acceso
 # ─────────────────────────────
 variable "aws_region" {
   description = "Región de AWS"
@@ -23,7 +23,7 @@ variable "my_ip_cidr" {
 }
 
 # ─────────────────────────────
-# 💾 Base de datos (RDS PostgreSQL)
+# Base de datos (RDS PostgreSQL)
 # ─────────────────────────────
 variable "db_name" {
   description = "Nombre de la base de datos PostgreSQL"
@@ -57,7 +57,7 @@ variable "db_engine_version" {
 }
 
 # ─────────────────────────────
-# 🌐 Red y subredes (VPC)
+# Red y subredes (VPC)
 # ─────────────────────────────
 variable "vpc_name" {
   description = "Nombre de la VPC"
@@ -105,7 +105,7 @@ variable "private_subnet_ids" {
 }
 
 # ─────────────────────────────
-# 🔐 Seguridad (Security Groups e IAM)
+# Seguridad (Security Groups e IAM)
 # ─────────────────────────────
 variable "security_group_id" {
   description = "ID del Security Group para EC2"
@@ -133,7 +133,7 @@ variable "ec2_role_name" {
 }
 
 # ─────────────────────────────
-# 🖥️ EC2 y Monitoreo
+# EC2 y Monitoreo
 # ─────────────────────────────
 variable "ec2_instance_id" {
   description = "ID de la instancia EC2 para alarmas"
@@ -149,7 +149,7 @@ variable "bucket_name" {
 }
 
 # ─────────────────────────────
-# 🐳 ECS y despliegue de contenedores
+# ECS y despliegue de contenedores
 # ─────────────────────────────
 variable "cluster_name" {
   description = "Nombre del ECS Cluster"
@@ -184,7 +184,7 @@ variable "acm_certificate_arn" {
 }
 
 # ─────────────────────────────
-# 🏷️ Etiquetas generales
+# Etiquetas generales
 # ─────────────────────────────
 variable "project_tag" {
   description = "Etiqueta del proyecto (usada en tags)"
