@@ -1,10 +1,10 @@
-# =======================================================================================
-# ECS Fargate Module - main.tf
-# Despliega un clúster ECS con un Application Load Balancer, Target Group, Listener,
-# definición de tarea y servicio ECS. Todo orquestado sobre Fargate.
-# =======================================================================================
+# ECS Fargate - main.tf
+# Este archivo define todos los recursos necesarios para desplegar una aplicación 
+# contenida en un clúster ECS utilizando Fargate como entorno de ejecución. 
+# Incluye el ALB, Target Group, Listener HTTPS, definición de tarea y servicio ECS.
 
-# 1️⃣ ECS Cluster
+# --- Clúster ECS ---
+# Se crea un clúster ECS con tags que identifican el proyecto y entorno.
 resource "aws_ecs_cluster" "this" {
   name = var.cluster_name
 
@@ -15,7 +15,9 @@ resource "aws_ecs_cluster" "this" {
   }
 }
 
-# 2️⃣ Application Load Balancer (ALB)
+# --- Application Load Balancer (ALB) ---
+# Balanceador de carga tipo "application" que recibe tráfico externo.
+# Está asociado a subredes públicas y protegido con un security group.
 resource "aws_lb" "alb" {
   name               = "${var.cluster_name}-alb"
   load_balancer_type = "application"
@@ -29,7 +31,9 @@ resource "aws_lb" "alb" {
   }
 }
 
-# 3️⃣ Target Group que recibe tráfico del ALB y lo direcciona a las tareas ECS
+# --- Target Group ---
+# Grupo de destino para las tareas ECS. Recibe el tráfico desde el ALB.
+# Se configura con un health check que verifica la disponibilidad del contenedor.
 resource "aws_lb_target_group" "tg" {
   name     = "${var.cluster_name}-tg"
   port     = var.container_port
@@ -52,7 +56,9 @@ resource "aws_lb_target_group" "tg" {
   }
 }
 
-# 4️⃣ Listener HTTPS que conecta el ALB con el Target Group
+# --- Listener HTTPS ---
+# Listener del ALB que escucha en el puerto 443 y reenvía el tráfico al target group.
+# Utiliza un certificado SSL de ACM proporcionado como variable.
 resource "aws_lb_listener" "https" {
   load_balancer_arn = aws_lb.alb.arn
   port              = 443
@@ -66,7 +72,9 @@ resource "aws_lb_listener" "https" {
   }
 }
 
-# 5️⃣ Definición de la Tarea (Task Definition)
+# --- ECS Task Definition ---
+# Define la especificación de la tarea que se desplegará en Fargate.
+# Incluye la imagen Docker, el puerto y configuración de logs en CloudWatch.
 resource "aws_ecs_task_definition" "app" {
   family                   = var.service_name
   requires_compatibilities = ["FARGATE"]
@@ -92,7 +100,9 @@ resource "aws_ecs_task_definition" "app" {
   }])
 }
 
-# 6️⃣ ECS Service que lanza las tareas Fargate
+# --- ECS Service ---
+# Servicio ECS que gestiona el ciclo de vida de las tareas Fargate.
+# Está conectado al target group del ALB y se lanza en subredes privadas.
 resource "aws_ecs_service" "service" {
   name            = var.service_name
   cluster         = aws_ecs_cluster.this.id
