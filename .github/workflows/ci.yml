@@ -1,11 +1,22 @@
+# Workflow principal para CI/CD en GitHub Actions
+# - Ejecuta validaciones de Terraform.
+# - Construye y sube imagen Docker a ECR.
+# - Corre tests de FastAPI usando PostgreSQL en contenedor.
+
+
 name: Terraform & App CI
 
+# Este workflow se ejecuta:
+# - Cuando se hace push a la rama main
+# - Cuando se crea un pull request hacia main
 on:
   push:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
 
+  # - Inicializa y valida la configuración de Terraform.
+  # - Ejecuta el plan sin aplicar cambios (solo validación).
 jobs:
   terraform:
     name: Terraform Init & Plan
@@ -21,27 +32,31 @@ jobs:
       run:
         working-directory: terraform
 
+# Clona el repositorio
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-
+# Instala Terraform
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
-
+      # Elimina caché previa para evitar errores
       - name: Clean Terraform cache
         run: rm -rf .terraform .terraform.lock.hcl
-
+# Inicializa Terraform y actualiza estado sin backend remoto
       - name: Terraform Init + Refresh
         run: |
           terraform init -backend=false
           terraform refresh -input=false -lock=false
-
+# Valida la sintaxis y estructura del código Terraform
       - name: Terraform Validate
         run: terraform validate
 
       - name: Terraform Plan
         run: terraform plan -no-color
 
+# Job: Docker Build
+  # - Construye la imagen Docker y la sube a ECR.
+  # - Depende del job 'terraform' para completarse.
   docker-build:
     name: Build, Tag & Push Docker Image to ECR
     runs-on: ubuntu-latest
@@ -49,10 +64,12 @@ jobs:
     env:
       AWS_REGION: eu-west-1
 
+# Clona el repositorio
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
 
+# Configura credenciales AWS para el job
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
@@ -60,13 +77,14 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region:            ${{ env.AWS_REGION }}
 
+# Construye la imagen Docker desde app/Dockerfile
       - name: Build Docker image
         run: |
           docker build \
             --file app/Dockerfile \
             --tag real-estate-app:latest \
             .
-
+# Autenticación con el registro de ECR
       - name: Login to Amazon ECR
         run: |
           ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
@@ -75,6 +93,7 @@ jobs:
               --username AWS \
               --password-stdin $ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com
 
+# Etiqueta la imagen con el SHA del commit y la sube a ECR
       - name: Tag & push image to ECR
         run: |
           ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
@@ -83,6 +102,9 @@ jobs:
           docker tag real-estate-app:latest $IMAGE_URI
           docker push $IMAGE_URI
 
+# Job: App Test
+  # - Ejecuta tests de FastAPI con pytest.
+  # - Lanza un contenedor PostgreSQL para pruebas.
   app-test:
     name: FastAPI App Tests
     runs-on: ubuntu-latest
@@ -97,6 +119,7 @@ jobs:
       DB_NAME:                    realestate
       DB_PORT:                    5432
 
+# Servicio de base de datos PostgreSQL para test local
     services:
       postgres:
         image: postgres:15
@@ -117,6 +140,7 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v3
 
+# Configura Python y dependencias
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
@@ -126,12 +150,14 @@ jobs:
         run: |
           pip install -r requirements.txt pytest black flake8
 
+# Verifica formato del código con Black
       - name: Check formatting with Black
         run: black --check .
 
+# Linting con Flake8
       - name: Lint with Flake8
         run: flake8 .
-
+# Prueba de conexión a la base de datos
       - name: Test DB Connection
         working-directory: app
         run: |
@@ -147,6 +173,8 @@ jobs:
       - name: Run tests
         run: pytest tests
 
+# Job opcional (comentado): Despliegue en ECS Fargate
+# - Se activará cuando complete la automatización de despliegue con apply.
   # ecs-deploy:
 #   name: Deploy to ECS Fargate
 #   runs-on: ubuntu-latest
