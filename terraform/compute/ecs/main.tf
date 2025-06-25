@@ -1,9 +1,12 @@
-# 1️⃣ Cluster ECS
+# 1. Defino un clúster ECS que será el entorno donde desplegaré mis servicios Fargate.
+# El nombre del clúster se recibe como variable externa (var.cluster_name).
+
 resource "aws_ecs_cluster" "this" {
   name = var.cluster_name
 }
 
-# 2️⃣ Application Load Balancer
+# 2. Creo un Application Load Balancer (ALB) que distribuirá el tráfico entrante.
+# Se asocia a subredes públicas y a un Security Group específico para el ALB.
 resource "aws_lb" "alb" {
   name               = "${var.cluster_name}-alb"
   load_balancer_type = "application"
@@ -11,7 +14,9 @@ resource "aws_lb" "alb" {
   subnets            = var.public_subnet_ids
 }
 
-# 3️⃣ Target Group para las tareas
+# 3. Este Target Group representa el grupo de destino donde el ALB enviará las solicitudes.
+# Está configurado para enrutar tráfico HTTP al puerto del contenedor.
+# También define un health check para asegurar que las tareas estén sanas.
 resource "aws_lb_target_group" "tg" {
   name     = "${var.cluster_name}-tg"
   port     = var.container_port
@@ -28,7 +33,9 @@ resource "aws_lb_target_group" "tg" {
   }
 }
 
-# 4️⃣ Listener HTTPS (requiere que tengas un certificado en ACM y su ARN como input)
+# 4. Listener HTTPS que escucha en el puerto 443.
+# Este listener asocia el certificado SSL de ACM y enruta tráfico al target group.
+# Permite que las aplicaciones expuestas estén protegidas por HTTPS.
 resource "aws_lb_listener" "https" {
   load_balancer_arn = aws_lb.alb.arn
   port              = 443
@@ -42,7 +49,9 @@ resource "aws_lb_listener" "https" {
   }
 }
 
-# 5️⃣ Task Definition Fargate
+# 5. Defino una ECS Task Definition compatible con Fargate.
+# Especifica CPU, memoria, imagen del contenedor, puertos expuestos y configuración de logs.
+# Aquí es donde declaro cómo se ejecuta el contenedor dentro de AWS.
 resource "aws_ecs_task_definition" "app" {
   family                   = var.service_name
   requires_compatibilities = ["FARGATE"]
@@ -72,7 +81,10 @@ resource "aws_ecs_task_definition" "app" {
   ])
 }
 
-# 6️⃣ Service Fargate
+# 6. Finalmente creo el ECS Service que lanza la aplicación en Fargate.
+# Este servicio gestiona cuántas tareas deben estar en ejecución.
+# Asocia las tareas al ALB, las conecta a subredes privadas y define el SG del contenedor.
+# También se asegura que el listener HTTPS esté creado antes de lanzar el servicio.
 resource "aws_ecs_service" "service" {
   name            = var.service_name
   cluster         = aws_ecs_cluster.this.id
