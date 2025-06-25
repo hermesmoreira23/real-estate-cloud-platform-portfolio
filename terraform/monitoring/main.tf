@@ -1,6 +1,6 @@
-# ===============================
-# Alarma de CPU para EC2
-# ===============================
+# Alarma de uso alto de CPU en EC2
+# - Dispara si el promedio de CPU supera el 70% durante 10 minutos (2 periodos de 5 min)
+# - Las acciones están desactivadas por ahora (no envía notificaciones)
 resource "aws_cloudwatch_metric_alarm" "ec2_cpu_high" {
   alarm_name          = "High-CPU-EC2"
   comparison_operator = "GreaterThanThreshold"
@@ -24,9 +24,9 @@ resource "aws_cloudwatch_metric_alarm" "ec2_cpu_high" {
   }
 }
 
-# ===============================
-# Dashboard CloudWatch para ECS y ALB
-# ===============================
+# Dashboard personalizado de CloudWatch
+# - Muestra métricas de ECS y ALB en una sola vista
+# - Se crea con widgets configurados en JSON
 resource "aws_cloudwatch_dashboard" "ecs_dashboard" {
   dashboard_name = "ecs-${var.environment}-dashboard"
 
