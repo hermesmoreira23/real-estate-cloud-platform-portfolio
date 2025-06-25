@@ -1,3 +1,6 @@
+# Subnet Group para RDS PostgreSQL:
+# - Define las subredes privadas donde se desplegará la base de datos.
+
 resource "aws_db_subnet_group" "postgres_subnet_group" {
   name       = "postgres-subnet-group"
   subnet_ids = var.private_subnet_ids
@@ -6,6 +9,10 @@ resource "aws_db_subnet_group" "postgres_subnet_group" {
     Name = "Postgres subnet group"
   }
 }
+
+# Instancia de base de datos PostgreSQL:
+# - Versión 15.4, clase t3.micro compatible con free tier.
+# - Usa el subnet group definido arriba y un SG privado.
 
 resource "aws_db_instance" "postgres" {
   identifier              = "real-estate-db"

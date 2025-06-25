@@ -7,7 +7,7 @@ variable "vpc_id" {
 }
 
 # Mi IP personal en formato CIDR:
-# - Se usa para restringir el acceso SSH únicamente a mi máquina local.
+# - Se usa para restringir el acceso SSH únicamente a mi máquina local
 
 variable "my_ip_cidr" {
   description = "79.117.198.67"
