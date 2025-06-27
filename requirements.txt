@@ -1,10 +1,11 @@
-fastapi
-uvicorn
-pytest
-httpx
-sqlalchemy
-psycopg2-binary
+fastapi                 # Framework web moderno, rápido y con validación automática
+uvicorn                 # Servidor ASGI recomendado para FastAPI
+pytest                  # Framework para escribir y ejecutar tests
+httpx                   # Cliente HTTP asíncrono y sincrónico, útil para tests api
 
-black==23.9.1
-flake8==7.2.0
+sqlalchemy              # ORM para interacción con PostgreSQL
+psycopg2-binary         # Driver PostgreSQL para SQLAlchemy
+
+black==23.9.1           # Formateador de código, asegura estilo consistente
+flake8==7.2.0           # Linter de código, detecta errores y malas prácticas
 
