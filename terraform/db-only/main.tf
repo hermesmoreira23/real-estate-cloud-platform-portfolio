@@ -1,7 +1,9 @@
+# Define el proveedor AWS y la región
 provider "aws" {
   region = "eu-west-1"
 }
 
+# Variables de sandbox para VPC y subnets
 variable "vpc_id" {
   description = "ID de VPC (sandbox ficticio)"
   default     = "vpc-12345678"
@@ -22,6 +24,7 @@ resource "aws_db_subnet_group" "pg" {
   subnet_ids = var.subnet_ids
 }
 
+# Instancia RDS PostgreSQL en Fargate sandbox
 resource "aws_db_instance" "pg" {
   identifier             = "sandbox-db"
   engine                 = "postgres"
@@ -30,8 +33,8 @@ resource "aws_db_instance" "pg" {
   allocated_storage      = 20
   db_subnet_group_name   = aws_db_subnet_group.pg.name
   publicly_accessible    = false
-  skip_final_snapshot    = true
-  username               = "admin"
-  password               = var.db_password
-  vpc_security_group_ids = []
+  skip_final_snapshot    = true                           # Elimina automáticamente al destruir
+  username               = "admin"                        # Usuario por defecto
+  password               = var.db_password                # Contraseña desde variable 
+  vpc_security_group_ids = []                             # Sin SG para simplificar sandbox
 }
