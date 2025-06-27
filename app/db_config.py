@@ -23,7 +23,6 @@ engine = create_engine(
 )
 
 
-
 # Creación de sesiones:
 # - Cada petición obtiene su propia sesión
 # - `autocommit=False` y `autoflush=False` permiten control manual de transacciones
