@@ -1,34 +1,39 @@
 version: "3.9"
 
 services:
+# Servicio FastAPI: construye desde Dockerfile del backend
   app:
     build:
       context: .
-      dockerfile: app/Dockerfile
+      dockerfile: app/Dockerfile                                        # Utiliza el Dockerfile versionado previamente
     ports:
-      - "8000:8000"
+      - "8000:8000"                                                     # Mapea el puerto local al contenedor
     depends_on:
-      - db
+      - db                                                              # Asegura que la DB arranque antes
     networks:
       - realestate-net
     env_file:
-      - ./app/.env  # ✅ ahora se activan las variables del .env
+      - ./app/.env                                                      # Carga variables de entorno desde el archivo .env
 
-  db:  # ❌ Desactiva este servicio si vas a usar RDS real (opcional)
-    image: postgres:15
+# Servicio PostgreSQL local para desarrollo y testing
+  # - Carga base realestate con credenciales admin/realhermes88
+  # - Usa volumen persistente para mantener datos entre reinicios
+  db:  
+    image: postgres:15                                                  # Versión oficial de PostgreSQL
     environment:
       POSTGRES_DB: realestate
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: realhermes88
     ports:
-      - "5432:5432"
+      - "5432:5432"                                                     # Mapea puerto para conexiones locales
     volumes:
       - pgdata:/var/lib/postgresql/data
     networks:
       - realestate-net
 
+# Volumen persistente para datos de PostgreSQL
 volumes:
   pgdata:
-
+  # Red de Docker para comunicación entre servicios
 networks:
   realestate-net:
